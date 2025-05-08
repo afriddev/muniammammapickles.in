@@ -10,7 +10,7 @@ function Footer() {
         {/* Brand */}
         <div className="flex flex-col  space-y-4 items-center">
           <div className="cursor-pointer  w-fit    ">
-            <img src="final.png" className="h-[20vh] lg:h-[20vh]"/>
+            <img src="/final.png" className="h-[20vh] lg:h-[20vh]"/>
           </div>
           <p className="text-sm w-full text-center">
           Bringing families together with authentic, home-style pickles.
