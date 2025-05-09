@@ -10,10 +10,10 @@ function Footer() {
         {/* Brand */}
         <div className="flex flex-col  space-y-4 items-center">
           <div className="cursor-pointer  w-fit    ">
-            <img src="/final.png" className="h-[20vh] lg:h-[20vh]"/>
+            <img src="/final.png" className="h-[20vh] lg:h-[20vh]" />
           </div>
           <p className="text-sm w-full text-center">
-          Bringing families together with authentic, home-style pickles.
+            Bringing families together with authentic, home-style pickles.
           </p>
         </div>
 
@@ -40,14 +40,6 @@ function Footer() {
               FAQ
             </button>
           </div>
-          <div className=" text-sm flex  items-center gap-4">
-            <button
-              onClick={() => navigate("/pricing")}
-              className="hover:text-blue-300 transition duration-300 text-left"
-            >
-              Pricing
-            </button>
-          </div>
         </div>
 
         {/* Legal */}
@@ -66,13 +58,13 @@ function Footer() {
             >
               Terms of Service
             </button>
-            
+
             <button
               onClick={() => navigate("/cookie-policy")}
               className="hover:text-blue-300 transition duration-300 text-left "
-            >Cookie Policy
+            >
+              Cookie Policy
             </button>
-
           </div>
         </div>
 
@@ -108,8 +100,20 @@ function Footer() {
 
       {/* Bottom Section */}
       <div className="w-full flex flex-col md:flex-row justify-between items-center mt-5 border-t border-white/20 text-center text-sm text-foreground gap-2">
-        <p>© 2025 Shaik afrid. All rights reserved.</p>
-        <p className="">Muni ammamma pickles</p>
+        <p>© 2025 Muni ammamma pickles. All rights reserved.</p>
+        <p className="">
+          Developed by{" "}
+          <span
+            className="text-primary  cursor-pointer"
+            onClick={() =>
+              window.open(
+                "mailto:afridayan01@gmail.com?subject=Software development collaboration"
+              )
+            }
+          >
+            Shaik afrid💙
+          </span>
+        </p>
         <div className="flex space-x-6 lg:mt-4 md:mt-0">
           <button
             onClick={() => navigate("/twitter")}

@@ -6,12 +6,10 @@ import Login from "./features/login/LoginMain";
 import TermsAndConditions from "./features/terms-and-conditions/TermsAndConditions";
 import CookiePolicy from "./features/cookie-policy/CookiePolicy";
 import PrivacyPolicy from "./features/privacy-policy/PrivacyPolicy";
-import ContactUs from "./features/contact-us/ContactUs";
 import Faqs from "./features/faqs/Faqs";
 import AboutUs from "./features/about-us/AboutUs";
 import ResetPassword from "./features/resetpassword/ResetPassword";
 import ForgotPassword from "./features/forgotpassword/ForgotPassword";
-import PricingPage from "./features/pricing/Pricing";
 import ScrollToTop from "./apputils/ScrollToTop";
 import AdminWrapper from "./apputils/AdminWrapper";
 import SuperAdminMain from "./features/admin/SuperAdminMain";
@@ -19,6 +17,8 @@ import ManageUsersMain from "./features/admin/manageusers/ManageUsersMain";
 import CollectionMain from "./features/collection/CollectionMain";
 import ProductMain from "./features/product/ProductMain";
 import { useImageLoader } from "./apputils/AppHooks";
+import WhatsappWidget from "./apputils/WhatsappWidget";
+import CartMain from "./features/cart/CartMain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -28,6 +28,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <ScrollToTop />
+          <WhatsappWidget />
 
           <Routes>
             <Route index={true} element={<HomeMain />} />
@@ -38,14 +39,13 @@ function App() {
             <Route path="/terms" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/contact" element={<ContactUs />} />
             <Route path="/faq" element={<Faqs />} />
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/pricing" element={<PricingPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/collection" element={<CollectionMain />} />
             <Route path="/product" element={<ProductMain />} />
+            <Route path="/cart" element={<CartMain />} />
             <Route element={<AdminWrapper />}>
               <Route path="/admin" element={<SuperAdminMain />} />
               <Route path="/admin/users" element={<ManageUsersMain />} />

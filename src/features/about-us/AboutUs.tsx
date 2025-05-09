@@ -117,7 +117,7 @@ export default function AboutMuniammamaPickles() {
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
           <div className="relative w-full md:w-1/2">
             <img
-              src="/chef.png" 
+              src="/chef/1.jpg" 
               alt="About us"
               className="h-[70vh] rounded-lg object-cover"
             />
@@ -126,16 +126,16 @@ export default function AboutMuniammamaPickles() {
             <div className="absolute -bottom-8 left-10 w-14 h-14 border-8 border-white rounded-full shadow-lg animate-bounce"></div>
             <div className="absolute top-1/3 -right-3 w-4 h-4 animate-ping bg-yellow-400 rounded-full"></div>
 
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white px-6 py-10 shadow-xl rounded-lg lg:w-[10vw] text-center z-10">
-              <h3 className="text-4xl font-extrabold text-purple-800 tracking-wide">
-                17
-              </h3>
-              <p className="mt-2 text-sm font-medium text-gray-700">
-                Years
-                <br />
-                Experience
-              </p>
-            </div>
+            <div className="absolute bottom-2 -right-10 lg:right-56 border border-foreground/10 transform -translate-x-1/2 bg-white px-6 py-10 shadow-xl rounded-lg lg:w-[10vw] text-center z-10">
+                <h3 className="text-4xl font-extrabold text-purple-800 tracking-wide">
+                  17 +
+                </h3>
+                <p className="mt-2 text-sm font-medium text-gray-700">
+                  Years
+                  <br />
+                  Experience
+                </p>
+              </div>
           </div>
 
           <div className="w-full md:w-1/2">

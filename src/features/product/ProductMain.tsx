@@ -38,28 +38,41 @@ function ProductMain() {
       <div className="flex items-center justify-center mt-5 ">
         <div className="w-full flex-col  items-center justify-center flex ">
           <div className="flex lg:flex-row flex-col justify-between w-[90%] lg:w-[60%]">
-            <img src="/01.png " className=" lg:w-[20vw] lg:h-[60vh] rounded-lg" />
-            <div className="flex flex-col gap-5  w-fit ">
+            <img
+              src="/01.png "
+              className=" lg:w-[20vw] lg:h-[60vh] rounded-lg"
+            />
+            <div className="flex flex-col gap-2 w-fit ">
               <div className="flex-col flex gap-3">
                 <h1 className=" font-semibold text-2xl text-foreground">
                   Chicken Pickle
                 </h1>
                 <h2 className=" font-light text-foreground/70 text-xl">
-                  Rs. 400
+                  <span className="text-foreground">Rs.</span> 400
                 </h2>
               </div>
               <div className="text-foreground/60">
                 Shipping calculated at checkout.
               </div>
               <p className="lg:w-[30vw] text-foreground/60 ">
-                PRODUCT DESCRIPTION: Rich in vitamin C and natural antioxidants,
-                it's both tasty and nourishing. Each batch is slow-cooked with
-                authentic spices for that homemade punch. Perfect with rice,
-                roti, or as a zesty side to your favorite meals.
+                <span className="text-foreground">PRODUCT DESCRIPTION :</span>{" "}
+                Rich in vitamin C and natural antioxidants, it's both tasty and
+                nourishing. Each batch is slow-cooked with authentic spices for
+                that homemade punch. Perfect with rice, roti, or as a zesty side
+                to your favorite meals.
               </p>
+              <p className="lg:w-[30vw] text-foreground/60 ">
+                <span className="text-foreground">Shelf Life :</span> 6 months.
+              </p>
+              <p className="lg:w-[30vw] text-foreground/60 ">
+                <span className="text-foreground">Product storage :</span> Keep
+                it at room temperature in a cool, dry place for 2 days and store
+                it in the refrigerator.
+              </p>
+
               <div className="flex-col flex gap-1">
                 <div className="font-semibold text-foreground/60 text-sm">
-                  SIZE:300G
+                  <span className="text-foreground">SIZE : </span>300G
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -103,22 +116,25 @@ function ProductMain() {
                     className="cursor-pointer"
                   />
                 </div>
-                <Button className="rounded-none w-[50%] lg:w-[20vw]" variant={"secondary"}>
+                <Button
+                  className="rounded-none w-[50%] lg:w-[20vw]"
+                  variant={"secondary"}
+                >
                   Add to cart
                 </Button>
               </div>
               <div className="flex flex-col gap-2">
                 <div className="text-foreground/70 text-sm">
                   Vendor :{" "}
-                  <span className="font-semibold">Muni ammmamma pickles</span>
+                  <span className="font-semibold text-foreground">Muni ammmamma pickles</span>
                 </div>
                 <div className="text-foreground/70 text-sm">
-                  Availabilty : <span className="font-semibold">In Stock</span>
+                  Availabilty : <span className="font-semibold text-foreground">In Stock</span>
                 </div>
 
                 <div className="text-foreground/70 text-sm">
                   Delivery :{" "}
-                  <span className="font-semibold">Withn 7 days </span>
+                  <span className="font-semibold text-foreground">Withn 7 days </span>
                 </div>
               </div>
             </div>

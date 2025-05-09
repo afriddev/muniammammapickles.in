@@ -9,16 +9,17 @@ const DeliverySection: React.FC = () => {
       <div className="container  lg:mx-auto px-4 flex flex-col lg:flex-row items-center justify-between">
         {/* Text Content */}
         <div className="lg:w-1/2 w-full  mb-12 lg:mb-0">
-          <h2 className=" text-3xl lg:text-5xl font-extrabold leading-tight  w-full  text-pink-800">
-            A Moments Of Delivered On{" "}
+          <h2 className="text-3xl lg:text-5xl font-extrabold leading-tight w-full text-pink-800">
+            A Taste of Tradition Delivered on{" "}
             <span className="text-orange-500">Right Time</span> & Place
           </h2>
 
           <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-            The restaurants in Hangzhou also catered to many northern Chinese
-            who had fled south from Kaifeng during the Jurchen invasion of the
-            1120s, while it is also known that many restaurants were run by
-            families.
+            At Muni Ammamma Pickles, we ensure that every jar of our handcrafted
+            pickles reaches you with perfect freshness, just like it came
+            straight from your ammamma’s kitchen. Whether near or far, we bring
+            the rich, nostalgic flavors of Telugu tradition to your doorstep—on
+            time, every time.
           </p>
 
           <Button

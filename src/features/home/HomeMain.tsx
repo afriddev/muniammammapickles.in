@@ -39,6 +39,32 @@ function HomeMain() {
     },
   ];
   const navigate = useNavigate();
+
+  const pickles = [
+    {
+      pic: "/chicken/chicken_bone_less.jpeg",
+      title: "Chicken Pickle (Boneless)",
+    },
+    {
+      pic: "/chicken/chicken_bone.webp",
+      title: "Chicken Pickle (Bone)",
+    },
+    {
+      pic: "/mango/mango_pickle.webp",
+      title: "Mango Pickle",
+    },
+
+    {
+      pic: "/mutton/mutton_pickle.webp",
+      title: "Mutton Pickle",
+    },
+
+    {
+      pic: "/pandu_mirchi/pandu_mirchi.webp",
+      title: "Pandu Mirchi Pickle",
+    },
+  ];
+
   return (
     <div className="flex  flex-col">
       <NavBar />
@@ -67,18 +93,36 @@ function HomeMain() {
         </div>
 
         <div className="flex flex-col items-center gap-5 relative w-full">
-          <img src="ing.png" className="absolute right-0 w-[10vw] " />
           <h4 className="text-pink-800 text-3xl">
-            There's something for everyone
+            Explore our range of pickles
           </h4>
-          <div className="flex flex-col lg:flex-row items-center justify-center    gap-5">
-            <div className="flex items-center gap-5">
-              <img src="chef.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
-              <img src="helthy.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
-            </div>
-            <img src="go_better.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
+          <div className=" flex-row gap-10 grid grid-cols-2 lg:grid-cols-5 px-5 ">
+            {pickles?.map((pickle, index: number) => (
+              <div
+                key={index}
+                className="  rounded-sm flex-col  items-center justify-center flex"
+              >
+                <img
+                  src={pickle?.pic}
+                  className="h-[20vh] lg:h-[30vh] lg:w-[14vw] rounded"
+                />
+                <div className=" w-full h-fit flex-col justify-center items-center p-3">
+                  <div className="font-semibold text-black w-full flex justify-center">
+                    {pickle?.title}
+                  </div>
+                  <Button
+                    onClick={() => navigate("/collection")}
+                    className="mt-2 w-full flex justify-center"
+                    variant={"secondary"}
+                  >
+                    Explore
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+
         <section className="bg-white py-16 px-6 md:px-10 lg:px-20">
           <div className="grid md:grid-cols-3 gap-10">
             {features.map((item) => (
@@ -109,15 +153,39 @@ function HomeMain() {
           />
           <DeliverySection />
         </div>
+        <div className="flex flex-col items-center gap-5 relative w-full">
+          <h4 className="text-secondary text-3xl">
+            There's something for everyone
+          </h4>
+          <div className="flex flex-col lg:flex-row items-center justify-center w-[90%] lg:w-fit   gap-5">
+            <div className="flex flex-col w-full lg:flex-row items-center gap-5">
+              <img
+                src="/chef/1.jpg"
+                className="h-[25vh] w-full lg:h-[50vh] lg:w-[25vw] object-cover rounded-xl"
+              />
+              <img
+                src="yoga/1.jpg"
+                className="h-[25vh] lg:h-[50vh] lg:w-[25vw] object-cover rounded-xl"
+              />
+            </div>
+            <img
+              src="/student/1.jpg"
+              className="h-[25vh] lg:h-[50vh] lg:w-[25vw] object-cover rounded-xl"
+            />
+          </div>
+        </div>
 
         <Testimonials />
+        <div className="w-full -mt-14">
+          <HeroBanner />
+        </div>
 
         <section className="py-20 lg:px-[20vw] relative">
           <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
             {/* Left Image */}
             <div className="relative w-full md:w-1/2">
               <img
-                src="/chef.png" // Replace with your image path
+                src="/chef/1.jpg" // Replace with your image path
                 alt="About us"
                 className="h-[70vh] rounded-lg object-cover"
               />
@@ -128,9 +196,9 @@ function HomeMain() {
               <div className="absolute top-1/3 -right-3 w-4 h-4 animate-ping bg-yellow-400 rounded-full"></div>
 
               {/* Experience Card */}
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white px-6 py-10 shadow-xl rounded-lg lg:w-[10vw] text-center z-10">
+              <div className="absolute bottom-2 -right-10 lg:right-56 lg:bottom-10 border border-foreground/10 transform -translate-x-1/2 bg-white px-6 py-10 shadow-xl rounded-lg lg:w-[10vw] text-center z-10">
                 <h3 className="text-4xl font-extrabold text-purple-800 tracking-wide">
-                  17
+                  17 +
                 </h3>
                 <p className="mt-2 text-sm font-medium text-gray-700">
                   Years
@@ -141,23 +209,23 @@ function HomeMain() {
             </div>
 
             {/* Right Content */}
-            <div className="w-full md:w-1/2 ">
-              <h2 className="text-3xl md:text-4xl font-bold  leading-tight text-pink-800">
+            <div className="w-full md:w-1/2">
+              <h2 className="text-3xl md:text-4xl font-bold leading-tight text-pink-800">
                 We are doing more than
                 <br />
-                you expect
+                just making pickles
               </h2>
               <p className="mt-6 text-gray-600 leading-relaxed">
-                Faudantium magnam error temporibus ipsam aliquid neque quibusdam
-                dolor, quia ea numquam assumenda mollitia dolorem impedit.
-                Voluptate at quis exercitationem officia temporibus adipisci
-                quae totam enim dolorem assumenda.
+                At <strong>Muni Ammamma Pickles</strong>, every jar is a
+                celebration of tradition. We handcraft our pickles using age-old
+                family recipes, premium ingredients, and a whole lot of
+                love—just like your ammamma (grandmother) used to do.
               </p>
               <p className="mt-4 text-gray-600 leading-relaxed">
-                Consectetur adipisicing elit. Cupiditate nesciunt amet facilis
-                numquam, nam adipisci qui voluptate voluptas enim obcaecati
-                veritatis animi nulla, mollitia commodi quaerat ex, autem ea
-                laborum.
+                Our mission is simple: bring authentic Telugu flavors to every
+                home. From the fiery Guntur avakaya to the tangy gongura, we go
+                beyond expectations to deliver homemade taste, unmatched
+                quality, and nostalgia in every bite.
               </p>
             </div>
           </div>
@@ -165,20 +233,23 @@ function HomeMain() {
 
         <div className="bg-[#fcf6e8] w-full p-10 grid grid-cols-2 lg:grid-cols-4  justify-between gap-10 lg:gap-0 lg:px-[10vw] text-center">
           <div className="flex flex-col items-center gap-2">
-            <img src="fast_shipping.png" />
+            <img src="fast_shipping.png" className="lg:h-[14vh] lg:w-[7vw]" />
             <p>Fast Shipping</p>
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <img src="payment_protected.png" />
+            <img
+              src="payment_protected.png"
+              className="lg:h-[14vh] lg:w-[7vw]"
+            />
             <p>Safe Payments</p>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <img src="24_support.png" />
+            <img src="24_support.png" className="lg:h-[14vh] lg:w-[7vw]" />
             <p>24x7 Support</p>
           </div>
           <div className="flex flex-col items-center gap-2  ">
-            <img src="delivery_box.png" />
+            <img src="delivery_box.png" className="lg:h-[14vh] lg:w-[7vw]" />
             <p>Spill Proof packing</p>
           </div>
         </div>
@@ -201,50 +272,45 @@ function HomeMain() {
           </div>
           <div className=" flex flex-col gap-6 lg:max-w-[60%] px-3 lg:text-sm text-center">
             <p>
-              Traditional food is timeless. It is not only deeply nourishing, it
-              is a pleasure to savour, and share! Nothing beats the enticing
-              aroma of a slowly simmering pot of sambar rice, the tempting look
-              of the red hot mango pickle, or the soul-warming deliciousness of
-              the tangy rasam. Truth be told, traditional recipes are no less
-              than precious heirlooms passed down from generation to generation!
+              Traditional food is more than just a meal—it's a memory, a
+              celebration, and a connection to our roots. There’s nothing quite
+              like the comforting smell of steaming hot rice paired with spicy
+              avakaya, or the tangy burst of gongura pickle on a simple plate.
+              At Muni Ammamma Pickles, we believe traditional recipes are
+              timeless treasures, lovingly passed from one generation to the
+              next.
             </p>
+
             <p>
-              Priya Foods has its roots in tradition. A tradition of good,
-              wholesome food prepared with minimally processed ingredients in a
-              manner as close as possible to how your great-grandmother would
-              have made it for you. With love, with diligence, and with no room
-              for the slightest compromise – be it in the goodness of the
-              ingredients, in the method of preparation, or in the time taken.
+              Our story is rooted in heritage—one where recipes are prepared the
+              way your ammamma (grandmother) once made them: patiently,
+              passionately, and without shortcuts. We use high-quality, natural
+              ingredients and follow age-old preparation methods to preserve
+              both flavor and authenticity.
             </p>
+
             <p>
-              Priya Foods brings to you and to your family…the{" "}
-              <strong>Joy of Traditional Taste</strong> ! In particular, Telugu
-              taste from the two states of Telangana and Andhra Pradesh. Because
-              we believe that the beauty of food nostalgia keeps hearts
-              connected wherever we are. Our recipes, the spices and ingredients
-              we pick, the methods we follow, even the implements we use, are
-              the kind that would get the nod of approval from even the purists.
+              Muni Ammamma Pickles brings you the{" "}
+              <strong>Joy of Authentic Telugu Taste</strong>, crafted with care
+              from the rich culinary traditions of Andhra Pradesh and Telangana.
+              We stay true to the spices, ingredients, and cooking tools that
+              our ancestors cherished, so every bite delivers a taste of home.
             </p>
+
             <p>
-              Established in 1980 with the aim of reintroducing authentic,
-              traditional Telugu dishes to busy Indian households, Priya Foods
-              has managed to find a place in Indian kitchens across the country.
-              Especially sought after, Priya Foods’ Chutneys and Pickles serve
-              nostalgia along with delectability to the Indian diaspora across
-              the world. <br />
-              Priya Foods’ state-of-the-art manufacturing facility holding
-              multiple national and international certifications is an ode to
-              its commitment to freshness, quality, hygiene, and safety. Priya
-              Foods has successfully integrated traditional science with
-              modern-day scientific manufacturing to keep the Telugu culinary
-              flag flying high unfazed by time and distance. And all this comes
-              at a price point that delivers value beyond expectations in order
-              to enable every Indian culinary lover to bring home the real taste
-              of Indian cuisine, hospitality, and trust.
+              Founded with the vision of keeping regional flavors alive in
+              modern kitchens, Muni Ammamma Pickles now serves families across
+              India and beyond. Whether it’s our signature mango avakaya, tender
+              ginger pickle, or fiery red chili chutney, each product is made in
+              hygienic conditions, blending traditional wisdom with modern
+              standards. <br />
+              With a commitment to purity, flavor, and cultural pride, Muni
+              Ammamma Pickles ensures that every jar you open brings back
+              memories, sparks joy, and keeps the tradition alive—one spoonful
+              at a time.
             </p>
           </div>
         </div>
-        <HeroBanner />
       </div>
 
       <Footer />

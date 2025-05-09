@@ -7,19 +7,31 @@ import { useNavigate } from "react-router-dom";
 function CollectionMain() {
   const pickles = [
     {
-      pic: "/01.png",
-      title: "CHIKEN PICKLE",
-      description: "Rs.300 - 100gms",
+      pic: "/chicken/chicken_bone_less.jpeg",
+      description: "Rs. 250 - 999  ",
+      title: "Chicken Pickle (Boneless)",
     },
     {
-      pic: "/01.png",
-      title: "CHIKEN PICKLE",
-      description: "Rs.700 - 250gms",
+      pic: "/chicken/chicken_bone.webp",
+      description: "Rs. 300 - 999  ",
+      title: "Chicken Pickle (Bone)",
     },
     {
-      pic: "/01.png",
-      title: "CHIKEN PICKLE",
-      description: "Rs.999 - 1kg",
+      pic: "/mango/mango_pickle.webp",
+      description: "Rs. 200 - 600  ",
+      title: "Mango Pickle",
+    },
+
+    {
+      pic: "/mutton/mutton_pickle.webp",
+      description: "Rs. 450 - 1300  ",
+      title: "Mutton Pickle",
+    },
+
+    {
+      pic: "/pandu_mirchi/pandu_mirchi.webp",
+      description: "Rs. 150 - 650  ",
+      title: "Pandu Mirchi Pickle",
     },
   ];
   const navigate = useNavigate();
@@ -28,7 +40,7 @@ function CollectionMain() {
       <div>
         <NavBar />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col  gap-5">
         <div className="bg-secondary p-4 w-full h-fit flex flex-row items-center">
           <img
             src="final.png"
@@ -39,7 +51,7 @@ function CollectionMain() {
             <h1 className="font-semibold text-white text-lg text-center  lg:text-3xl flex items-center ">
               A SOULFUL DESTINATION OF PICKLES
             </h1>
-            <h1 className="font-light text-center bg-red-400 hidden lg:flex text-white text-xl items-center ml-16 ">
+            <h1 className="font-light text-center  hidden lg:flex text-white text-xl items-center ml-16 ">
               The Store For Home Made Food Products
             </h1>
           </div>
@@ -67,13 +79,16 @@ function CollectionMain() {
               </div>
             </div>
           </div>
-          <div className=" flex-row gap-10 grid grid-cols-2 lg:grid-cols-3 ">
+          <div className=" flex-row gap-10 grid grid-cols-2 lg:grid-cols-3  lg:px-0 px-5">
             {pickles?.map((pickle, index: number) => (
               <div
                 key={index}
                 className="  rounded-sm flex-col  items-center justify-center flex"
               >
-                <img src="/01.png" className="h-[25vh] lg:w-[9vw] " />
+                <img
+                  src={pickle.pic}
+                  className=" h-[20vh] lg:h-[30vh] lg:w-[14vw] rounded"
+                />
                 <div className=" w-full h-fit flex-col justify-center items-center p-3">
                   <div className="font-semibold text-black w-full flex justify-center">
                     {pickle?.title}
@@ -91,6 +106,28 @@ function CollectionMain() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+        <div className="bg-[#fcf6e8] w-full p-10 grid grid-cols-2 lg:grid-cols-4  justify-between gap-10 lg:gap-0 lg:px-[10vw] text-center">
+          <div className="flex flex-col items-center gap-2">
+            <img src="fast_shipping.png" className="lg:h-[14vh] lg:w-[7vw]" />
+            <p>Fast Shipping</p>
+          </div>
+
+          <div className="flex flex-col items-center gap-2">
+            <img
+              src="payment_protected.png"
+              className="lg:h-[14vh] lg:w-[7vw]"
+            />
+            <p>Safe Payments</p>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <img src="24_support.png" className="lg:h-[14vh] lg:w-[7vw]" />
+            <p>24x7 Support</p>
+          </div>
+          <div className="flex flex-col items-center gap-2  ">
+            <img src="delivery_box.png" className="lg:h-[14vh] lg:w-[7vw]" />
+            <p>Spill Proof packing</p>
           </div>
         </div>
       </div>
