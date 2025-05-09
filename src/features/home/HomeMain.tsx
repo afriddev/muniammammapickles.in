@@ -69,7 +69,7 @@ function HomeMain() {
     <div className="flex  flex-col">
       <NavBar />
       <div className="flex flex-col gap-14 items-center ">
-        <div className="relative w-full min-h-[85vh] overflow-hidden">
+        <div className="relative w-full  overflow-hidden">
           {/* Responsive Image with <picture> */}
           <picture>
             <source srcSet="/banner_image.jpg" media="(min-width:1024px)" />
@@ -102,7 +102,7 @@ function HomeMain() {
         </div>
 
         <div className="flex flex-col items-center gap-5 relative w-full">
-          <h4 className="text-pink-800 text-3xl">
+          <h4 className="text-pink-800 text-3xl px-4">
             Explore our range of pickles
           </h4>
           <div className=" flex-row gap-10 grid grid-cols-2 lg:grid-cols-5 px-5 ">

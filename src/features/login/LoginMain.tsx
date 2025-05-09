@@ -21,7 +21,7 @@ function Login() {
   const { formState, handleSubmit, register, reset, watch } = useForm();
 
   useEffect(() => {
-    if (userName) navigate(`/fg/home`);
+    // if (userName) navigate(`/fg/home`);
   }, [userName]);
 
   function handleLoginSubmit(e: any) {
@@ -42,7 +42,7 @@ function Login() {
             console.log(data);
             localStorage.setItem("userName", encodeString(data?.userName));
             localStorage.setItem("isFirstTimeLogin", data?.firstTimeLogin);
-            navigate(`/fg/home`);
+            navigate(`/`);
           } else {
             reset();
           }
