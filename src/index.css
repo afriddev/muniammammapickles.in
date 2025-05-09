@@ -1,19 +1,17 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
 
 .font-montserrat {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .font-roboto {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .font-inter {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
-
 
 @tailwind base;
 @tailwind components;
@@ -44,9 +42,9 @@
     --constructive: 140 75% 33%;
     --constructive-foreground: 160 100% 100%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 160 100% 0%;
+    --ring: 220 100% 50%;  /* Indigo/blue ring */
+    --border: 210 20% 70%;  /* Soft cool gray */
+    --input: 0 0% 98%;   
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -56,16 +54,14 @@
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground text-xs list-none font-inter  ;
+    @apply bg-background text-foreground text-xs list-none font-inter;
   }
 }
-
 
 .text-outline {
   -webkit-text-stroke: 1px #facc15; /* yellow-400 */
