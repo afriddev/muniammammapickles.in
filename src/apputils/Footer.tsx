@@ -108,8 +108,8 @@ function Footer() {
 
       {/* Bottom Section */}
       <div className="w-full flex flex-col md:flex-row justify-between items-center mt-5 border-t border-white/20 text-center text-sm text-foreground gap-2">
-        <p>© 2025 FreeGrow LLP. All rights reserved.</p>
-        <p className="">An Indian Company</p>
+        <p>© 2025 Shaik afrid. All rights reserved.</p>
+        <p className="">Muni ammamma pickles</p>
         <div className="flex space-x-6 lg:mt-4 md:mt-0">
           <button
             onClick={() => navigate("/twitter")}

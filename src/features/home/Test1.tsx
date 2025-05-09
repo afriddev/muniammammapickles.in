@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeroBanner: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative bg-[#7a0d0d] text-white py-20 overflow-hidden w-full px-[10vw]">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center px-6 w-full ">
@@ -17,7 +19,12 @@ const HeroBanner: React.FC = () => {
             1120s, while it is also known that many restaurants were run by
             families.
           </p>
-          <Button className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-6 px-10 rounded-none ">
+          <Button
+            onClick={() => {
+              navigate("/collection");
+            }}
+            className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-6 px-10 rounded-none "
+          >
             Order Now
           </Button>
         </div>

@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const DeliverySection: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-24 bg-white relative overflow-hidden lg:px-[10vw]">
       <div className="container  lg:mx-auto px-4 flex flex-col lg:flex-row items-center justify-between">
@@ -19,7 +21,12 @@ const DeliverySection: React.FC = () => {
             families.
           </p>
 
-          <Button className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 rounded-none  shadow-md transition duration-300">
+          <Button
+            onClick={() => {
+              navigate("/collection");
+            }}
+            className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 rounded-none  shadow-md transition duration-300"
+          >
             Order Now
           </Button>
         </div>

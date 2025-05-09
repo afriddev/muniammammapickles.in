@@ -58,7 +58,7 @@ function HomeMain() {
               buds
             </p>
             <Button
-              onClick={() => navigate("/productlist")}
+              onClick={() => navigate("/collection")}
               className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 w-fit rounded-none shadow-md transition duration-300"
             >
               Order Now
@@ -71,12 +71,12 @@ function HomeMain() {
           <h4 className="text-pink-800 text-3xl">
             There's something for everyone
           </h4>
-          <div className="flex flex-col lg:flex-row items-center justify-center  gap-5">
+          <div className="flex flex-col lg:flex-row items-center justify-center    gap-5">
             <div className="flex items-center gap-5">
-              <img src="chef.png" className="h-[25vh] lg:h-[50vh]" />
-              <img src="helthy.png" className="h-[25vh] lg:h-[50vh]" />
+              <img src="chef.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
+              <img src="helthy.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
             </div>
-            <img src="go_better.png" className="h-[25vh] lg:h-[50vh]" />
+            <img src="go_better.png" className="h-[25vh] lg:h-[50vh] lg:w-[20vw] object-cover rounded-xl" />
           </div>
         </div>
         <section className="bg-white py-16 px-6 md:px-10 lg:px-20">

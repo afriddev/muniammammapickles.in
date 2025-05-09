@@ -15,10 +15,10 @@ function NavBar() {
           className="flex items-center gap-2 cursor-pointer"
         >
           <div className="flex relative">
-            <div className="w-6 h-3 rotate-90 rounded-t-full bg-blue-500"></div>
-            <div className="w-6 h-3 rotate-180 -mt-3 -ml-3 rounded-t-full bg-blue-500"></div>
+            <div className="w-6 h-3 rotate-90 rounded-t-full bg-secondary"></div>
+            <div className="w-6 h-3 rotate-180 -mt-3 -ml-3 rounded-t-full bg-secondary"></div>
           </div>
-          <h1 className="text-xl lg:text-2xl font-bold text-blue-600 tracking-tight">
+          <h1 className="text-xl lg:text-2xl font-bold text-secondary -ml-2 mt-1 tracking-tight">
             Muni Ammama Pickles
           </h1>
         </div>

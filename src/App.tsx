@@ -13,14 +13,16 @@ import ResetPassword from "./features/resetpassword/ResetPassword";
 import ForgotPassword from "./features/forgotpassword/ForgotPassword";
 import PricingPage from "./features/pricing/Pricing";
 import ScrollToTop from "./apputils/ScrollToTop";
-import ProductList from "./features/home/ProductList";
-import Product from "./features/home/Product";
 import AdminWrapper from "./apputils/AdminWrapper";
 import SuperAdminMain from "./features/admin/SuperAdminMain";
 import ManageUsersMain from "./features/admin/manageusers/ManageUsersMain";
+import CollectionMain from "./features/collection/CollectionMain";
+import ProductMain from "./features/product/ProductMain";
+import { useImageLoader } from "./apputils/AppHooks";
 
 function App() {
   const queryClient = new QueryClient();
+  useImageLoader();
   return (
     <div>
       <QueryClientProvider client={queryClient}>
@@ -42,8 +44,8 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
-            <Route path="/productlist" element={<ProductList />} />
-            <Route path="/product" element={<Product />} />
+            <Route path="/collection" element={<CollectionMain />} />
+            <Route path="/product" element={<ProductMain />} />
             <Route element={<AdminWrapper />}>
               <Route path="/admin" element={<SuperAdminMain />} />
               <Route path="/admin/users" element={<ManageUsersMain />} />
