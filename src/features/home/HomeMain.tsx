@@ -4,7 +4,7 @@ import DeliverySection from "./DeliverySection";
 import Testimonials from "./Testimonials";
 import HeroBanner from "./Test1";
 import { Button } from "@/components/ui/button";
-
+import { useNavigate } from "react-router-dom";
 function HomeMain() {
   const features = [
     {
@@ -38,6 +38,7 @@ function HomeMain() {
         "Sustainability is core—we use recyclable jars and minimal plastic.",
     },
   ];
+  const navigate = useNavigate();
   return (
     <div className="flex  flex-col">
       <NavBar />
@@ -56,7 +57,10 @@ function HomeMain() {
               A bold twist on traditional flavors, crafted to excite your taste
               buds
             </p>
-            <Button className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 w-fit rounded-none shadow-md transition duration-300">
+            <Button
+              onClick={() => navigate("/productlist")}
+              className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 w-fit rounded-none shadow-md transition duration-300"
+            >
               Order Now
             </Button>
           </div>

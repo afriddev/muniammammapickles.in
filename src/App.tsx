@@ -13,6 +13,8 @@ import ResetPassword from "./features/resetpassword/ResetPassword";
 import ForgotPassword from "./features/forgotpassword/ForgotPassword";
 import PricingPage from "./features/pricing/Pricing";
 import ScrollToTop from "./apputils/ScrollToTop";
+import ProductList from "./features/home/ProductList";
+import Product from "./features/home/Product";
 
 function App() {
   const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/productlist" element={<ProductList />} />
+            <Route path="/product" element={<Product />} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
