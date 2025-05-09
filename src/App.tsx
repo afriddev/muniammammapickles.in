@@ -15,6 +15,7 @@ import PricingPage from "./features/pricing/Pricing";
 import ScrollToTop from "./apputils/ScrollToTop";
 import AdminWrapper from "./apputils/AdminWrapper";
 import SuperAdminMain from "./features/admin/SuperAdminMain";
+import ManageUsersMain from "./features/admin/manageusers/ManageUsersMain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -40,7 +41,8 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route element={<AdminWrapper />}>
-              <Route path="/map/ruleset/admin" element={<SuperAdminMain />} />
+              <Route path="/admin" element={<SuperAdminMain />} />
+              <Route path="/admin/users" element={<ManageUsersMain />} />
             </Route>
           </Routes>
         </BrowserRouter>

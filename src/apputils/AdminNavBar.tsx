@@ -6,16 +6,12 @@ import { TbReorder } from "react-icons/tb";
 import { FaBell } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { MdAddBusiness } from "react-icons/md";
-import { useState } from "react";
-import AppDialog from "./AppDialog";
-import ManageUsers from "@/features/admin/ManageUsers";
 
 function AdminNavBar() {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   return (
-    <header className="w-full sticky top-0 z-[200] bg-white/80 backdrop-blur-md border-b border-gray-200">
+    <header className="w-full sticky top-0 z-[999] bg-white/80 backdrop-blur-md border-b border-gray-200">
       <div className="px-5 lg:px-10 py-4 flex items-center justify-between">
         <div
           onClick={() => navigate("/")}
@@ -29,15 +25,6 @@ function AdminNavBar() {
             Muni Ammama Pickles
           </h1>
         </div>
-        <div className="flex flex-row items-center justify-between px-10">
-          <p className="text-xl text-foreground/70 flex">
-            Hello<span className="text-black mr-1 -mt-[0.1rem]">👋</span>
-            <span className="font-medium text-black flex items-center">
-              {" "}
-              Shaik Afrid
-            </span>
-          </p>
-        </div>
         <div className="flex flex-row gap-6 items-center">
           <Button className="" variant={"secondary"}>
             <MdAddBusiness className="w-5 h-5   " />
@@ -46,7 +33,7 @@ function AdminNavBar() {
           <Button
             className=""
             onClick={() => {
-              setOpenDialog(true);
+              navigate("/admin/users");
             }}
           >
             <FaUsers className="w-5 h-5   " />
@@ -109,7 +96,6 @@ function AdminNavBar() {
           </Sheet>
         </div>
       </div>
-      {openDialog && <ManageUsers setOpenDialog={setOpenDialog} />}
     </header>
   );
 }
