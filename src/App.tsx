@@ -22,7 +22,10 @@ import CartMain from "./features/cart/CartMain";
 
 function App() {
   const queryClient = new QueryClient();
+
+
   useImageLoader();
+
   return (
     <div>
       <QueryClientProvider client={queryClient}>

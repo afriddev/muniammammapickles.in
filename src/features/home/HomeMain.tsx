@@ -68,24 +68,33 @@ function HomeMain() {
   return (
     <div className="flex  flex-col">
       <NavBar />
-      <div className="flex flex-col gap-14 items-center text-center">
-        <div className="relative">
-          <img className="hidden lg:flex w-full" src="/banner_image.jpg" />
-          <img src="/banner_mobile.png" className="lg:hidden w-full" />
+      <div className="flex flex-col gap-14 items-center ">
+        <div className="relative w-full min-h-[85vh] overflow-hidden">
+          {/* Responsive Image with <picture> */}
+          <picture>
+            <source srcSet="/banner_image.jpg" media="(min-width:1024px)" />
+            <img
+              src="/banner_mobile.png"
+              alt="Chicken Pickle Banner"
+              className="w-full h-full object-cover"
+            />
+          </picture>
 
+          {/* Overlay */}
           <div className="absolute inset-0 bg-black/50 lg:bg-black/0 z-10"></div>
 
-          <div className="absolute text-background lg:w-[30vw] text-start left-[5vw] z-20 flex flex-col justify-center top-[13vh] gap-3">
-            <h1 className="text-3xl lg:text-[50px] leading-tight">
+          {/* Content */}
+          <div className="absolute z-20 text-white left-[5vw] top-[13vh] max-w-xl flex flex-col gap-4">
+            <h1 className="text-3xl lg:text-[50px] font-bold leading-tight text-balance">
               Irresistible Chicken Pickle Flavors
             </h1>
-            <p className="text-background text-xl lg:text-3xl">
+            <p className="text-lg lg:text-2xl text-balance">
               A bold twist on traditional flavors, crafted to excite your taste
               buds
             </p>
             <Button
               onClick={() => navigate("/collection")}
-              className="mt-8 bg-orange-400 hover:bg-orange-600 text-white font-semibold px-10 py-6 w-fit rounded-none shadow-md transition duration-300"
+              className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-none transition w-fit"
             >
               Order Now
             </Button>
