@@ -5,12 +5,12 @@ const WhatsappWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const phoneNumber = "919553360657";
-  const message = encodeURIComponent(
-    "Hey, I am interested. Can you explain the costs or prices?"
-  );
 
   const handleChatStart = () => {
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+    window.open(
+      `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=Hey%2C%20I%20am%20interested.%20Can%20you%20explain%20the%20costs%20or%20prices%3F`,
+      "_blank"
+    );
   };
 
   return (
@@ -29,7 +29,10 @@ const WhatsappWidget: React.FC = () => {
         <div className="w-72 bg-white rounded-lg shadow-xl overflow-hidden border">
           <div className="bg-green-700 text-white p-3 flex items-center justify-between">
             <div className="flex  items-center ">
-                <img src="/final.png " className=" -mt-2 w-12 h-12 rounded-full"/>
+              <img
+                src="/final.png "
+                className=" -mt-2 w-12 h-12 rounded-full"
+              />
               <div>
                 <h4 className="text-sm font-bold">Muni Ammamma Pickles</h4>
                 <p className="text-xs">The Joy of Homemade Taste</p>
