@@ -1,20 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsappWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const widgetRef = useRef<HTMLDivElement>(null);
   const phoneNumber = "919553360657";
 
-  const handleChatStart = () => {
+  function handleChatStart() {
     window.open(
       `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=Hey%2C%20I%20am%20interested.%20Can%20you%20explain%20the%20costs%20or%20prices%3F`,
       "_blank"
     );
-  };
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        widgetRef.current &&
+        !widgetRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[999]">
+    <div className="fixed bottom-6 right-6 z-[999]" ref={widgetRef}>
       {/* Minimized Button */}
       {!isOpen ? (
         <button

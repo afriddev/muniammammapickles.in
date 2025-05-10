@@ -126,15 +126,22 @@ function ProductMain() {
               <div className="flex flex-col gap-2">
                 <div className="text-foreground/70 text-sm">
                   Vendor :{" "}
-                  <span className="font-semibold text-foreground">Muni ammmamma pickles</span>
+                  <span className="font-semibold text-foreground">
+                    Muni ammmamma pickles
+                  </span>
                 </div>
                 <div className="text-foreground/70 text-sm">
-                  Availabilty : <span className="font-semibold text-foreground">In Stock</span>
+                  Availabilty :{" "}
+                  <span className="font-semibold text-foreground">
+                    In Stock
+                  </span>
                 </div>
 
                 <div className="text-foreground/70 text-sm">
                   Delivery :{" "}
-                  <span className="font-semibold text-foreground">Withn 7 days </span>
+                  <span className="font-semibold text-foreground">
+                    Withn 7 days{" "}
+                  </span>
                 </div>
               </div>
             </div>

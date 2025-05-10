@@ -23,7 +23,6 @@ import CartMain from "./features/cart/CartMain";
 function App() {
   const queryClient = new QueryClient();
 
-
   useImageLoader();
 
   return (
@@ -47,7 +46,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/collection" element={<CollectionMain />} />
-            <Route path="/product" element={<ProductMain />} />
+            <Route path="/product/:id" element={<ProductMain />} />
             <Route path="/cart" element={<CartMain />} />
             <Route element={<AdminWrapper />}>
               <Route path="/admin" element={<SuperAdminMain />} />

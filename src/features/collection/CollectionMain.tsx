@@ -10,28 +10,33 @@ function CollectionMain() {
       pic: "/chicken/chicken_bone_less.jpeg",
       description: "Rs. 250 - 999  ",
       title: "Chicken Pickle (Boneless)",
+      id: "Chicken-pickle-boneless",
     },
     {
       pic: "/chicken/chicken_bone.webp",
       description: "Rs. 300 - 999  ",
       title: "Chicken Pickle (Bone)",
+      id: "Chicken-pickle-bone",
     },
     {
       pic: "/mango/mango_pickle.webp",
       description: "Rs. 200 - 600  ",
       title: "Mango Pickle",
+      id: "mango-pickle",
     },
 
     {
       pic: "/mutton/mutton_pickle.webp",
       description: "Rs. 450 - 1300  ",
       title: "Mutton Pickle",
+      id: "mutton-pickle",
     },
 
     {
       pic: "/pandu_mirchi/pandu_mirchi.webp",
       description: "Rs. 150 - 650  ",
       title: "Pandu Mirchi Pickle",
+      id: "pandu-mirchi-pickle",
     },
   ];
   const navigate = useNavigate();
@@ -97,11 +102,11 @@ function CollectionMain() {
                     {pickle?.description}
                   </div>
                   <Button
-                    onClick={() => navigate("/product")}
+                    onClick={() => navigate(`/product/${pickle?.id}`)}
                     className="mt-2 w-full flex justify-center"
                     variant={"secondary"}
                   >
-                    Add to cart
+                    Details
                   </Button>
                 </div>
               </div>
