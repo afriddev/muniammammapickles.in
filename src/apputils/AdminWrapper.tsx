@@ -14,7 +14,7 @@ function AdminWrapper() {
               Manage users,Edit,Delete,Disable and more...
             </p>
           </div>
-          <div className="border m-2 shadow-lg min-h-[80vh] rounded">
+          <div className=" min-h-[80vh] rounded">
             <Outlet />
           </div>
         </div>

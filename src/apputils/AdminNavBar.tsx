@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TbReorder } from "react-icons/tb";
 import { FaBell } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { MdAddBusiness } from "react-icons/md";
+import { useState } from "react";
+import AddProduct from "@/features/admin/addproduct/AddProduct";
 
 function AdminNavBar() {
   const navigate = useNavigate();
+  const [openAddProductDialog, setOpenAddProductDialog] =
+    useState<boolean>(false);
 
   return (
     <header className="w-full sticky top-0 z-[999] bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -26,7 +28,13 @@ function AdminNavBar() {
           </h1>
         </div>
         <div className="flex flex-row gap-6 items-center">
-          <Button className="" variant={"secondary"}>
+          <Button
+            className=""
+            variant={"secondary"}
+            onClick={() => {
+              setOpenAddProductDialog(true);
+            }}
+          >
             <MdAddBusiness className="w-5 h-5   " />
             Add Product
           </Button>
@@ -52,8 +60,22 @@ function AdminNavBar() {
             <FaBell className="w-5 h-6" />
           </div>
         </div>
+      </div>
+      {openAddProductDialog && (
+        <AddProduct
+          onClose={() => {
+            setOpenAddProductDialog(false);
+          }}
+        />
+      )}
+    </header>
+  );
+}
 
-        <div className="md:hidden">
+export default AdminNavBar;
+
+{
+  /* <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -94,10 +116,5 @@ function AdminNavBar() {
               </Button>
             </SheetContent>
           </Sheet>
-        </div>
-      </div>
-    </header>
-  );
+        </div> */
 }
-
-export default AdminNavBar;

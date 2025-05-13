@@ -31,7 +31,7 @@ function ManageUsersMain() {
     "DISABLE" | "DELETE" | "ENABLE" | undefined
   >();
   return (
-    <div className="flex flex-col  p-4 gap-1  ">
+    <div className="flex flex-col  p-4 gap-1  border mx-3">
       
       <div className="flex w-full justify-between">
         <div className="flex flex-row gap-2 items-center">
