@@ -7,8 +7,12 @@ const WhatsappWidget: React.FC = () => {
   const phoneNumber = "919553360657";
 
   function handleChatStart() {
+    const message =
+      "Hey, I am interested. Can you explain the costs or prices?";
+    const encodedMessage = encodeURIComponent(message);
+
     window.open(
-      `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=Hey%2C%20I%20am%20interested.%20Can%20you%20explain%20the%20costs%20or%20prices%3F`,
+      `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}`,
       "_blank"
     );
   }
