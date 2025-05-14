@@ -5,9 +5,13 @@ import { LuAsterisk } from "react-icons/lu";
 
 interface FileUplaodInterface {
   mandatory?: boolean;
+  onSelectFile: (e: File) => void;
 }
 
-export default function FileUplaod({ mandatory }: FileUplaodInterface) {
+export default function FileUplaod({
+  mandatory,
+  onSelectFile,
+}: FileUplaodInterface) {
   return (
     <div>
       <div className=" flex flex-col gap-2">
@@ -26,6 +30,10 @@ export default function FileUplaod({ mandatory }: FileUplaodInterface) {
             placeholder="File"
             accept="image/*"
             className="cursor-pointer "
+            onChange={(e) => {
+              const file = (e as any)?.target?.files[0];
+              onSelectFile(file);
+            }}
           />
         </div>
       </div>

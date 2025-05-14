@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AppDialog from "@/apputils/AppDialog";
+import { useImageUplaod } from "@/apputils/AppHooks";
+import AppSpinner from "@/apputils/AppSpinner";
 import { Button } from "@/components/ui/button";
 import FileUplaod from "@/components/ui/file-upload";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/components/ui/use-toast";
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { IoAddSharp } from "react-icons/io5";
@@ -12,19 +15,48 @@ interface AddProductInterface {
   onClose: () => void;
 }
 function AddProduct({ onClose }: AddProductInterface) {
-  const { handleSubmit, register, formState } = useForm();
+  const { handleSubmit, register, formState, clearErrors, setValue } =
+    useForm();
   const { errors } = formState;
+  const { isPending: uploadingImage, uplaodImage } = useImageUplaod();
+  const { toast } = useToast();
 
+  function handleOnSelectFile(file: File) {
+    setValue("image", file);
+    clearErrors("image");
+  }
   function handleAddProduct(e: any) {
     console.log(e);
+
+
+    const imageFormdata = new FormData();
+    imageFormdata.append("image", e?.image);
+
+    uplaodImage(imageFormdata, {
+      onSuccess(data) {
+        console.log(data?.data)
+        const imageUrl = data?.data?.data?.url;
+        const imageDeleteUrl = data?.data?.data?.delete_url;
+        if (imageUrl && imageDeleteUrl) {
+          console.log(imageUrl);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "File uplaod failed!",
+          });
+        }
+      },
+    });
   }
 
   return (
     <div>
+      {<AppSpinner isPending={uploadingImage} />}
       <AppDialog title="Add product" onClose={onClose} placement="CENTER">
         <form
           onSubmit={handleSubmit(handleAddProduct)}
-          className="w-[20vw] flex flex-col gap-3"
+          className="w-[20vw] flex flex-col gap-8"
         >
           <Input
             placeholder="Enter text.."
@@ -84,8 +116,17 @@ function AddProduct({ onClose }: AddProductInterface) {
               </div>
             </RadioGroup>
           </div>
-          <div>
-            <FileUplaod mandatory={true} />
+          <div className="flex flex-col gap-1">
+            <FileUplaod
+              onSelectFile={handleOnSelectFile}
+              mandatory={true}
+              {...register("image", {
+                required: "Please select Image",
+              })}
+            />
+            <p className="text-destructive">
+              {<label className="">{errors?.image?.message as string}</label>}
+            </p>
           </div>
           <div className="flex gap-2 mt-2">
             <Button

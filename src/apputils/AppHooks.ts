@@ -1,28 +1,41 @@
-
+import { imageUplaod } from "@/servcies/app/imageUplaod";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
+
+export function useImageUplaod() {
+  const {
+    isPending,
+    mutate: uplaodImage,
+    data,
+  } = useMutation({
+    mutationFn: (data: FormData) => imageUplaod(data),
+  });
+
+  return { data, isPending, uplaodImage };
+}
 
 export function useImageLoader() {
   useEffect(() => {
     const handleImage = (img: HTMLImageElement) => {
       if (img.complete) {
-        img.setAttribute('data-loaded', 'true');
+        img.setAttribute("data-loaded", "true");
       } else {
-        img.addEventListener('load', () => {
-          img.setAttribute('data-loaded', 'true');
+        img.addEventListener("load", () => {
+          img.setAttribute("data-loaded", "true");
         });
       }
     };
 
     // Initial load
-    document.querySelectorAll('img').forEach((img) => handleImage(img));
+    document.querySelectorAll("img").forEach((img) => handleImage(img));
 
     // Observe future DOM changes (e.g., route changes)
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLElement) {
-            node.querySelectorAll?.('img').forEach((img) => handleImage(img));
-            if (node.tagName === 'IMG') handleImage(node as HTMLImageElement);
+            node.querySelectorAll?.("img").forEach((img) => handleImage(img));
+            if (node.tagName === "IMG") handleImage(node as HTMLImageElement);
           }
         });
       });
