@@ -20,6 +20,7 @@ import { useImageLoader } from "./apputils/AppHooks";
 import WhatsappWidget from "./apputils/WhatsappWidget";
 import CartMain from "./features/cart/CartMain";
 import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMain";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const queryClient = new QueryClient();
@@ -56,6 +57,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        <Toaster />
       </QueryClientProvider>
     </div>
   );

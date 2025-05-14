@@ -31,6 +31,8 @@ function AddProduct({ onClose }: AddProductInterface) {
 
     const imageFormdata = new FormData();
     imageFormdata.append("image", e?.image);
+    imageFormdata.append("key", "b4dc048c04c6dc33d12850a906ada12c");
+
 
     uplaodImage(imageFormdata, {
       onSuccess(data) {
@@ -42,8 +44,7 @@ function AddProduct({ onClose }: AddProductInterface) {
         } else {
           toast({
             variant: "destructive",
-            title: "Error",
-            description: "File uplaod failed!",
+            title: "File uplaod failed!",
           });
         }
       },

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useAppContext } from "@/apputils/AppContext";
 import Footer from "@/apputils/Footer";
 import NavBar from "@/apputils/NavBar";
 import { Button } from "@/components/ui/button";
@@ -5,41 +7,9 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 
 function CollectionMain() {
-  const pickles = [
-    {
-      pic: "/chicken/chicken_bone_less.jpeg",
-      description: "Rs. 250 - 999  ",
-      title: "Chicken Pickle (Boneless)",
-      id: "Chicken-pickle-boneless",
-    },
-    {
-      pic: "/chicken/chicken_bone.webp",
-      description: "Rs. 300 - 999  ",
-      title: "Chicken Pickle (Bone)",
-      id: "Chicken-pickle-bone",
-    },
-    {
-      pic: "/mango/mango_pickle.webp",
-      description: "Rs. 200 - 600  ",
-      title: "Mango Pickle",
-      id: "mango-pickle",
-    },
-
-    {
-      pic: "/mutton/mutton_pickle.webp",
-      description: "Rs. 450 - 1300  ",
-      title: "Mutton Pickle",
-      id: "mutton-pickle",
-    },
-
-    {
-      pic: "/pandu_mirchi/pandu_mirchi.webp",
-      description: "Rs. 150 - 650  ",
-      title: "Pandu Mirchi Pickle",
-      id: "pandu-mirchi-pickle",
-    },
-  ];
   const navigate = useNavigate();
+  const { pickelsData } = useAppContext();
+
   return (
     <div className="flex flex-col h-fit">
       <div>
@@ -62,7 +32,7 @@ function CollectionMain() {
           </div>
         </div>
 
-        <div className="flex gap-24 mt-10 w-full justify-center  ">
+        <div className="flex gap-24 mt-10  justify-center  ">
           <div className="lg:flex flex-col hidden ">
             <div className="flex">
               <div className="w-full h-fit  flex gap-5 flex-col">
@@ -85,24 +55,25 @@ function CollectionMain() {
             </div>
           </div>
           <div className=" flex-row gap-10 grid grid-cols-2 lg:grid-cols-3  lg:px-0 px-5">
-            {pickles?.map((pickle, index: number) => (
+            {pickelsData?.map((pickle, index: number) => (
               <div
                 key={index}
                 className="  rounded-sm flex-col  items-center justify-center flex"
               >
                 <img
-                  src={pickle.pic}
+                  src={pickle.imageUrl}
                   className=" h-[20vh] lg:h-[30vh] lg:w-[14vw] rounded"
                 />
                 <div className=" w-full h-fit flex-col justify-center items-center p-3">
                   <div className="font-semibold text-black w-full flex justify-center">
-                    {pickle?.title}
+                    {pickle?.productName}
                   </div>
                   <div className="text-gray-600 font-thin w-full flex justify-center">
-                    {pickle?.description}
+                    {parseInt((pickle?.price / 4) as any)} -{" "}
+                    {parseInt(pickle?.price as any)} .Rs
                   </div>
                   <Button
-                    onClick={() => navigate(`/product/${pickle?.id}`)}
+                    onClick={() => navigate(`/product/${pickle?.productId}`)}
                     className="mt-2 w-full flex justify-center"
                     variant={"secondary"}
                   >

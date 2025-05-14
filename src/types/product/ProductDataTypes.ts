@@ -1,18 +1,31 @@
 export type productDataType = {
-  productId?: string;
+  productId: string;
   productName: string;
-  isKgs?: boolean;
-  isMl?: boolean;
-  availability?: number;
+  isKgs: boolean;
+  isMl: boolean;
+  availability: number;
   price: number;
   isAvailable: boolean;
   isOutOfStock: boolean;
-  editedBy?: string;
-  imageUrls?: string[];
-  title: string;
+  editedBy: string;
+  imageUrl: string;
+  imageDeleteUrl: string | null;
   description: string;
-  ingredients?: string[];
-  others?: string[];
+  ingredients: string[];
+  orders: number;
   createdAt: string;
   updatedAt: string;
+};
+
+export type addToCartProductType = {
+  productId: string;
+  productName: string;
+  price: number;
+  imageUrl:string;
+  description:string;
+  isKgs:boolean;
+  isML:boolean;
+  size:number
+  quantity:number
+
 };
