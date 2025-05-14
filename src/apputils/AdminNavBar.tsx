@@ -3,14 +3,10 @@ import { Button } from "@/components/ui/button";
 import { TbReorder } from "react-icons/tb";
 import { FaBell } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
-import { MdAddBusiness } from "react-icons/md";
-import { useState } from "react";
-import AddProduct from "@/features/admin/addproduct/AddProduct";
+import { ImList } from "react-icons/im";
 
 function AdminNavBar() {
   const navigate = useNavigate();
-  const [openAddProductDialog, setOpenAddProductDialog] =
-    useState<boolean>(false);
 
   return (
     <header className="w-full sticky top-0 z-[999] bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -32,12 +28,13 @@ function AdminNavBar() {
             className=""
             variant={"secondary"}
             onClick={() => {
-              setOpenAddProductDialog(true);
+              navigate("/admin/products");
             }}
           >
-            <MdAddBusiness className="w-5 h-5   " />
-            Add Product
+            <ImList className="w-5 h-5   " />
+            Products
           </Button>
+
           <Button
             className=""
             onClick={() => {
@@ -61,13 +58,6 @@ function AdminNavBar() {
           </div>
         </div>
       </div>
-      {openAddProductDialog && (
-        <AddProduct
-          onClose={() => {
-            setOpenAddProductDialog(false);
-          }}
-        />
-      )}
     </header>
   );
 }

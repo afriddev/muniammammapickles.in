@@ -49,7 +49,7 @@ function AppDialog({
             {title}
           </DialogTitle>
         </DialogHeader>
-        <div className="p-3 m-4">{children}</div>
+        <div className="p-3 m-4 -mt-2">{children}</div>
       </DialogContent>
     </Dialog>
   );

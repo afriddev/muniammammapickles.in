@@ -19,6 +19,7 @@ import ProductMain from "./features/product/ProductMain";
 import { useImageLoader } from "./apputils/AppHooks";
 import WhatsappWidget from "./apputils/WhatsappWidget";
 import CartMain from "./features/cart/CartMain";
+import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ function App() {
             <Route element={<AdminWrapper />}>
               <Route path="/admin" element={<SuperAdminMain />} />
               <Route path="/admin/users" element={<ManageUsersMain />} />
+              <Route path="/admin/products" element={<ManageProductsMain />} />
             </Route>
           </Routes>
         </BrowserRouter>
