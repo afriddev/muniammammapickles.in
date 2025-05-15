@@ -6,7 +6,7 @@ function Footer() {
 
   return (
     <footer className="bg-background text-foreground w-full lg:pt-16 pb-10 px-8 md:px-16 mt-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-16 items-center">
+      <div className="w-full  mx-auto grid grid-cols-1 md:grid-cols-5 gap-16 items-center">
         {/* Brand */}
         <div className="flex flex-col  space-y-4 items-center">
           <div className="cursor-pointer  w-fit    ">
@@ -45,25 +45,32 @@ function Footer() {
         {/* Legal */}
         <div className="flex flex-col items-start space-y-4">
           <h3 className="text-lg font-semibold">Legal</h3>
-          <div className=" text-sm flex gap-3 lg:gap-0 lg:flex-col  items-start">
+          <div className=" text-sm  gap-3 lg:gap-0 grid lg:grid-cols-2  items-start">
             <button
               onClick={() => navigate("/privacy-policy")}
-              className="hover:text-blue-300 transition duration-300 text-left"
+              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
             >
               Privacy Policy
             </button>
             <button
               onClick={() => navigate("/terms")}
-              className="hover:text-blue-300 transition duration-300 text-left "
+              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
             >
               Terms of Service
             </button>
 
             <button
               onClick={() => navigate("/cookie-policy")}
-              className="hover:text-blue-300 transition duration-300 text-left "
+              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
             >
               Cookie Policy
+            </button>
+
+            <button
+              onClick={() => navigate("/refund-policy")}
+              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
+            >
+              refund Policy
             </button>
           </div>
         </div>

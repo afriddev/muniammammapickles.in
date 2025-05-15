@@ -1,94 +1,172 @@
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Trash2, Edit } from "lucide-react";
+import { addToCartProductType } from "@/types/product/ProductDataTypes";
+import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CiShoppingCart } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
-const CartDrawer = () => {
-  const cartItem = {
-    name: "Tomato Pickle",
-    detail: "300g / With Garlic",
-    price: 110,
-    quantity: 1,
-    image: "/products/tomato.jpg",
-  };
+function CartMain() {
+  const navigate = useNavigate();
+  const cartData = localStorage.getItem("mapCartItems");
+  const cartItems: addToCartProductType[] = JSON.parse(cartData as never) ?? [];
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [agreed, setAgreed] = useState<boolean>(false);
+
+  const [cartProducts, setCartProducts] =
+    useState<addToCartProductType[]>(cartItems);
+
+  useEffect(() => {
+    if (!cartProducts && cartItems) {
+      setCartProducts(cartItems);
+    }
+    handleCalculateTotalPrice();
+  }, [cartItems, cartProducts]);
+
+  function handleCalculateTotalPrice() {
+    let price = 0;
+
+    for (let index = 0; index < cartProducts?.length; index++) {
+      price =
+        price +
+        (cartProducts[index].price / cartProducts[index].size) *
+          cartProducts[index].quantity;
+    }
+    setTotalPrice(price);
+  }
+
+  function handleDelete(index: number) {
+    const temp = cartProducts?.filter((_, index1) => index1 != index);
+    setCartProducts(temp);
+    localStorage.setItem("mapCartItems", JSON.stringify(temp));
+  }
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button className="bg-pink-600 hover:bg-pink-700 text-white">Open Cart</Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-sm p-4 space-y-4">
-        <h2 className="text-lg font-bold border-b pb-2">SHOPPING CART</h2>
-
-        {/* Product Info */}
-        <div className="flex gap-3">
-          <img
-            src={cartItem.image}
-            alt={cartItem.name}
-            className="w-20 h-20 object-contain border rounded"
-          />
-          <div className="flex-1">
-            <h3 className="font-semibold">{cartItem.name}</h3>
-            <p className="text-sm text-gray-500">{cartItem.detail}</p>
-            <p className="text-sm mt-1 font-medium">Rs. {cartItem.price}.00</p>
-
-            {/* Quantity Controls */}
-            <div className="mt-2 flex items-center gap-2">
-              <Button variant="outline" size="icon"><Minus size={16} /></Button>
-              <span className="px-3">{cartItem.quantity}</span>
-              <Button variant="outline" size="icon"><Plus size={16} /></Button>
+    <div className="flex flex-col justify-between h-full pb-4">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-lg font-bold  pt-2">SHOPPING CART</h2>
+        <div className=" flex flex-col gap-4 h-[65vh] overflow-auto">
+          {cartProducts?.length === 0 && (
+            <div className="flex flex-col items-center justify-center text-center p-6 rounded-md bg-gray-50 border border-dashed border-gray-300">
+              <CiShoppingCart className="h-16 w-16" />
+              <h2 className="text-lg font-semibold text-gray-700">
+                Your cart is empty
+              </h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Looks like you haven't added anything yet.
+              </p>
+              <button
+                onClick={() => {
+                  navigate("/collection");
+                }}
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition"
+              >
+                Start Shopping
+              </button>
             </div>
-          </div>
+          )}
+
+          {cartProducts?.map((item, index) => {
+            return (
+              <div
+                className="gap-3 rounded flex relative  px-3 border border-foreground/10 p-2 shadow "
+                key={index}
+              >
+                <div
+                  className="absolute bottom-3 right-3"
+                  onClick={() => {
+                    handleDelete(index);
+                  }}
+                >
+                  <Trash className="w-6 h-6  bg-destructive cursor-pointer drop-shadow-md text-background p-1  shadow" />
+                </div>
+                <img
+                  src={item?.imageUrl}
+                  className="h-20 rounded bg-red-400  w-20"
+                />
+                <div className="flex flex-col justify-between">
+                  <h2 className="font-medium text-sm">{item?.productName}</h2>
+                  <p className="text-foreground/60 -mt-1">
+                    {`${item?.description.slice(1, 35)} ${
+                      item?.description?.length > 35 ? "..." : ""
+                    }`}
+                  </p>
+
+                  <div className="flex flex-col  text-xs mt-1">
+                    <div className="flex  flex-col">
+                      <div className="flex items-center gap-1  ">
+                        <span className="text-muted-foreground">Weight:</span>
+                        <span className="font-medium">
+                          {item?.size === 4
+                            ? "250 g"
+                            : item?.size === 2
+                            ? "500 g"
+                            : "1 kg"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1  ">
+                        <span className="text-muted-foreground">
+                          Unit Price:
+                        </span>
+                        <span className="font-medium">
+                          {(item?.price / item?.size).toFixed(2)} ₹
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1  ">
+                      <span className="text-muted-foreground">Quantity:</span>
+                      <span className="font-medium">{item?.quantity} pcs</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="border-t pt-4">
+        <div className="text-sm flex justify-between font-medium mb-2">
+          <span className="font-medium">Subtotal:</span>
+          <span className="font-semibold">Rs. {totalPrice}.00</span>
         </div>
 
-        {/* Edit/Delete */}
-        <div className="flex justify-end gap-4">
-          <Button variant="ghost" size="icon"><Edit size={18} /></Button>
-          <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50">
-            <Trash2 size={18} />
-          </Button>
+        <div className="mt-3 text-sm">
+          <label className="flex items-start gap-2">
+            <input
+              checked={agreed}
+              type="checkbox"
+              className="mt-1 cursor-pointer"
+              onClick={() => {
+                setAgreed(!agreed);
+              }}
+            />
+            <span>
+              I agree with the{" "}
+              <a
+                onClick={() => {
+                  navigate("/terms");
+                }}
+                className="underline cursor-pointer"
+              >
+                terms and conditions
+              </a>
+              . Customers are requested to record and share unboxing videos to
+              claim any missing products. Claims must be raised within 24 hours
+              of receipt.
+            </span>
+          </label>
         </div>
-
-        {/* Icons Row */}
-        <div className="flex justify-around py-3">
-          <div className="bg-gray-100 p-3 rounded-full shadow"><i className="fas fa-receipt"></i></div>
-          <div className="bg-gray-100 p-3 rounded-full shadow"><i className="fas fa-truck"></i></div>
-          <div className="bg-gray-100 p-3 rounded-full shadow"><i className="fas fa-tags"></i></div>
-        </div>
-
-        {/* Subtotal */}
-        <div className="border-t pt-4">
-          <div className="flex justify-between font-medium mb-2">
-            <span>Subtotal:</span>
-            <span>Rs. {cartItem.price * cartItem.quantity}.00</span>
-          </div>
-          <p className="text-xs text-gray-500">
-            Taxes and discounts calculated at checkout.
-          </p>
-
-          <div className="mt-3 text-sm">
-            <label className="flex items-start gap-2">
-              <input type="checkbox" className="mt-1" />
-              <span>
-                I agree with the <a href="#" className="underline">terms and conditions</a>.
-                Customers are requested to record and share unboxing videos to claim any missing products.
-                Claims must be raised within 24 hours of receipt.
-              </span>
-            </label>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="space-y-2">
-          <Button className="w-full bg-gray-800 hover:bg-gray-900 text-white">
-            VIEW CART
-          </Button>
-          <div className="text-center text-xs font-semibold bg-red-600 text-white py-2 rounded">
-            MINIMUM ORDER VALUE INR 300
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        <Button
+          disabled={!agreed || totalPrice <= 0}
+          className="w-full mt-3 bg-foreground hover:bg-foreground/90"
+        >
+          Place order
+        </Button>
+      </div>
+    </div>
   );
-};
+}
 
-export default CartDrawer;
+export default CartMain;

@@ -1,10 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import CartMain from "@/features/cart/CartMain";
+import { useEffect, useState } from "react";
 function NavBar() {
   const navigate = useNavigate();
+  const [openCart, setOpenCart] = useState<boolean>(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setOpenCart(false);
+  }, [location]);
 
   return (
     <header className="w-full sticky top-0 z-[200] bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -44,45 +52,19 @@ function NavBar() {
           >
             About
           </button>
-          <Sheet>
+          <Sheet
+            onOpenChange={(open: boolean) => {
+              setOpenCart(open);
+            }}
+            open={openCart}
+          >
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5 text-blue-600" />
               </Button>
             </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-full max-w-sm p-4 space-y-4 z-[999]"
-            >
-              <h2 className="text-lg font-bold  mt-2">SHOPPING CART</h2>
-
-              <div className="min-h-[50vh] text-xl flex items-center justify-center">
-                Coming soon..
-              </div>
-              {/* Subtotal */}
-              <div className="border-t pt-4">
-                <div className="mt-3 text-sm">
-                  <label className="flex items-start gap-2">
-                    <input type="checkbox" className="mt-1" />
-                    <span>
-                      I agree with the{" "}
-                      <a href="#" className="underline">
-                        terms and conditions
-                      </a>
-                      . Customers are requested to record and share unboxing
-                      videos to claim any missing products. Claims must be
-                      raised within 24 hours of receipt.
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="space-y-2">
-                <Button className="w-full bg-gray-800 hover:bg-gray-900 text-white">
-                  Place order
-                </Button>
-              </div>
+            <SheetContent side="right" className="px-3 z-[999]">
+              <CartMain />
             </SheetContent>
           </Sheet>
 
@@ -95,9 +77,27 @@ function NavBar() {
           </Button>
         </div>
 
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
+        <div className="lg:hidden flex gap-2">
+          <Sheet onOpenChange={(open: boolean) => {
+              setOpenCart(open);
+            }}
+            open={openCart}>
+            <SheetTrigger className="border border-primary/40" asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="w-5 h-5 text-blue-600" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-full max-w-sm p-4 space-y-4 z-[999]"
+            >
+              <CartMain />
+            </SheetContent>
+          </Sheet>
+          <Sheet
+            
+          >
+            <SheetTrigger asChild className="border border-primary/40">
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5 text-blue-600" />
               </Button>
@@ -125,48 +125,6 @@ function NavBar() {
                 >
                   About
                 </div>
-
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <div className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer">
-                      Cart
-                    </div>
-                  </SheetTrigger>
-                  <SheetContent
-                    side="right"
-                    className="w-full max-w-sm p-4 space-y-4 z-[999]"
-                  >
-                    <h2 className="text-lg font-bold  mt-2">SHOPPING CART</h2>
-
-                    <div className="min-h-[50vh] text-xl flex items-center justify-center">
-                      Coming soon..
-                    </div>
-                    {/* Subtotal */}
-                    <div className="border-t pt-4">
-                      <div className="mt-3 text-sm">
-                        <label className="flex items-start gap-2">
-                          <input type="checkbox" className="mt-1" />
-                          <span>
-                            I agree with the{" "}
-                            <a href="#" className="underline">
-                              terms and conditions
-                            </a>
-                            . Customers are requested to record and share
-                            unboxing videos to claim any missing products.
-                            Claims must be raised within 24 hours of receipt.
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="space-y-2">
-                      <Button className="w-full bg-gray-800 hover:bg-gray-900 text-white">
-                        Place order
-                      </Button>
-                    </div>
-                  </SheetContent>
-                </Sheet>
 
                 <Button
                   variant="outline"
@@ -198,6 +156,14 @@ function NavBar() {
                     >
                       Cookie Policy
                     </button>
+                    
+                    <button
+                      onClick={() => navigate("/refund-policy")}
+                      className="hover:text-blue-300 transition duration-300 text-left "
+                    >
+                      Refund Policy
+                    </button>
+
                   </div>
                 </div>
                 <div className="flex flex-col items-start space-y-4">

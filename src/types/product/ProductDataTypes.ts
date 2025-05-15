@@ -13,6 +13,7 @@ export type productDataType = {
   description: string;
   ingredients: string[];
   orders: number;
+  pickleType:"NON_VEG"|"VEG"
   createdAt: string;
   updatedAt: string;
 };

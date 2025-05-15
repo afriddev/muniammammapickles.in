@@ -21,6 +21,7 @@ import WhatsappWidget from "./apputils/WhatsappWidget";
 import CartMain from "./features/cart/CartMain";
 import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMain";
 import { Toaster } from "./components/ui/toaster";
+import RefundPolicyPage from "./features/refund-policy/RefundPolicyMain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/faq" element={<Faqs />} />

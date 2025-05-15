@@ -3,17 +3,28 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { LuAsterisk } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
+import { X } from "lucide-react";
 
 interface InputInterface extends React.ComponentProps<"input"> {
   label?: string;
   errorMessage?: any;
   mandatory?: boolean;
   icon?: string;
+  onClear?: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputInterface>(
   (
-    { className, type, label, errorMessage, mandatory, icon, ...props },
+    {
+      className,
+      type,
+      label,
+      errorMessage,
+      mandatory,
+      icon,
+      onClear,
+      ...props
+    },
     ref
   ) => {
     function getIcon() {
@@ -52,6 +63,14 @@ const Input = React.forwardRef<HTMLInputElement, InputInterface>(
               )}
               {...props}
             />
+            {onClear && props?.value && (
+              <div
+                className="absolute  right-2 cursor-pointer w-5 h-5 bg-gray-100 lg:hover:bg-gray-300 flex items-center justify-center rounded-full"
+                onClick={onClear}
+              >
+                <X className="h-4 w-4" />
+              </div>
+            )}
           </div>
         </div>
         {errorMessage && (

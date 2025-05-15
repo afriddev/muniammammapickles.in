@@ -25,13 +25,14 @@ const initState: contextType = {
       isKgs: true,
       isMl: false,
       availability: 100,
-      price:1000,
+      price: 1000,
       isAvailable: true,
       isOutOfStock: false,
       editedBy: "admin",
+      // imageUrl:"",
       imageUrl: "/chicken/chicken_bone_less.jpeg",
       imageDeleteUrl: null,
-
+      pickleType: "NON_VEG",
       description:
         "Tender boneless chicken pieces slow-cooked with traditional Andhra spices. A fiery favorite with every meal.",
       ingredients: [
@@ -53,10 +54,11 @@ const initState: contextType = {
       isKgs: true,
       isMl: false,
       availability: 85,
-      price:1000,
+      price: 1000,
       isAvailable: true,
       isOutOfStock: false,
       editedBy: "admin",
+      // imageUrl:"",
       imageUrl: "/chicken/chicken_bone.webp",
       imageDeleteUrl: null,
       description:
@@ -69,6 +71,8 @@ const initState: contextType = {
         "Mustard",
         "Oil",
       ],
+      pickleType: "NON_VEG",
+
       orders: 90,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -79,12 +83,15 @@ const initState: contextType = {
       isKgs: true,
       isMl: false,
       availability: 150,
-      price:1000,
+      price: 1000,
       isAvailable: true,
       isOutOfStock: false,
       editedBy: "admin",
+      // imageUrl:"",
       imageUrl: "/mango/mango_pickle.webp",
       imageDeleteUrl: null,
+      pickleType: "VEG",
+
       description:
         "Classic raw mango chunks blended with hand-ground spices and cold-pressed oil. Tangy, spicy, unforgettable.",
       ingredients: [
@@ -104,11 +111,14 @@ const initState: contextType = {
       productName: "Mutton Pickle",
       isKgs: true,
       isMl: false,
+      pickleType: "NON_VEG",
+
       availability: 60,
-      price:1000,
+      price: 1000,
       isAvailable: true,
       isOutOfStock: false,
       editedBy: "admin",
+      // imageUrl:"",
       imageUrl: "/mutton/mutton_pickle.webp",
       imageDeleteUrl: null,
       description:
@@ -131,10 +141,13 @@ const initState: contextType = {
       isKgs: true,
       isMl: false,
       availability: 110,
-      price:1000,
+      pickleType: "VEG",
+
+      price: 1000,
       isAvailable: true,
       isOutOfStock: false,
       editedBy: "admin",
+      // imageUrl:"",
       imageUrl: "/pandu_mirchi/pandu_mirchi.webp",
       imageDeleteUrl: null,
       description:
