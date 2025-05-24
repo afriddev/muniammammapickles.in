@@ -5,10 +5,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import CartMain from "@/features/cart/CartMain";
 import { useEffect, useState } from "react";
+import { useGetEmailId, useGetProfileUrl } from "./AppHooks";
 function NavBar() {
   const navigate = useNavigate();
   const [openCart, setOpenCart] = useState<boolean>(false);
   const location = useLocation();
+  const emailId = useGetEmailId();
+  const profileUrl = useGetProfileUrl();
 
   useEffect(() => {
     setOpenCart(false);
@@ -68,20 +71,37 @@ function NavBar() {
             </SheetContent>
           </Sheet>
 
-          <Button
-            variant="outline"
-            className="border-blue-500 text-blue-600 hover:bg-blue-50"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </Button>
+          {emailId ? (
+            <div
+              className="w-10 h-10 cursor-pointer "
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              <img
+                src={profileUrl ? profileUrl : "/default_profile.webp"}
+                className="h-10 w-10 object-fill rounded-full"
+                alt="profile"
+              />
+            </div>
+          ) : (
+            <Button
+              variant="outline"
+              className="border-blue-500 text-blue-600 hover:bg-blue-50"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+          )}
         </div>
 
         <div className="lg:hidden flex gap-2">
-          <Sheet onOpenChange={(open: boolean) => {
+          <Sheet
+            onOpenChange={(open: boolean) => {
               setOpenCart(open);
             }}
-            open={openCart}>
+            open={openCart}
+          >
             <SheetTrigger className="border border-primary/40" asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5 text-blue-600" />
@@ -94,9 +114,7 @@ function NavBar() {
               <CartMain />
             </SheetContent>
           </Sheet>
-          <Sheet
-            
-          >
+          <Sheet>
             <SheetTrigger asChild className="border border-primary/40">
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5 text-blue-600" />
@@ -125,14 +143,29 @@ function NavBar() {
                 >
                   About
                 </div>
-
-                <Button
-                  variant="outline"
-                  className="w-full border-blue-500 text-blue-600 hover:bg-blue-50"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
+                {emailId ? (
+                  <div className="flex  items-center gap-2 ">
+                    <img
+                      src={profileUrl ? profileUrl : "/default_profile.webp"}
+                      className="h-10 w-10 object-fill rounded-full"
+                      alt="profile"
+                    />
+                    <div
+                      onClick={() => navigate("/profile")}
+                      className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer"
+                    >
+                      Profile
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="w-full border-blue-500 text-blue-600 hover:bg-blue-50"
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </Button>
+                )}
 
                 <div className="flex flex-col items-start space-y-4">
                   <h3 className="text-lg font-semibold">Legal</h3>
@@ -156,14 +189,13 @@ function NavBar() {
                     >
                       Cookie Policy
                     </button>
-                    
+
                     <button
                       onClick={() => navigate("/refund-policy")}
                       className="hover:text-blue-300 transition duration-300 text-left "
                     >
                       Refund Policy
                     </button>
-
                   </div>
                 </div>
                 <div className="flex flex-col items-start space-y-4">

@@ -23,6 +23,8 @@ import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMa
 import { Toaster } from "./components/ui/toaster";
 import RefundPolicyPage from "./features/refund-policy/RefundPolicyMain";
 import ContactUsMain from "./features/conact-us/ContactsUsMain";
+import Protected from "./apputils/Protected";
+import ProfileMain from "./features/profile/ProfileMain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -54,6 +56,10 @@ function App() {
             <Route path="/collection" element={<CollectionMain />} />
             <Route path="/product/:id" element={<ProductMain />} />
             <Route path="/cart" element={<CartMain />} />
+
+            <Route element={<Protected/>}>
+            <Route path="/profile" element={<ProfileMain />} /> 
+            </Route>
             <Route element={<AdminWrapper />}>
               <Route path="/admin" element={<SuperAdminMain />} />
               <Route path="/admin/users" element={<ManageUsersMain />} />

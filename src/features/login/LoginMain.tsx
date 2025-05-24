@@ -2,7 +2,7 @@
 import LoginForm from "./LoginForm";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useLogin } from "@/hooks/auth/loginHooks";
 import AppSpinner from "@/apputils/AppSpinner";
 import { useNavigate } from "react-router-dom";
@@ -10,19 +10,14 @@ import { useForm } from "react-hook-form";
 import PageWrapper from "@/apputils/PageWrapper";
 import NavBar from "@/apputils/NavBar";
 import Footer from "@/apputils/Footer";
-import { encodeString } from "@/apputils/appUtils";
 import DividerWithText from "@/apputils/DividerWithText";
 
 function Login() {
-  const userName = localStorage.getItem("userName");
   const [loginStep, setLoginStep] = useState<number>(0);
   const { login, isPending } = useLogin();
   const navigate = useNavigate();
   const { formState, handleSubmit, register, reset, watch } = useForm();
 
-  useEffect(() => {
-    // if (userName) navigate(`/fg/home`);
-  }, [userName]);
 
   function handleLoginSubmit(e: any) {
     login(
@@ -39,10 +34,11 @@ function Login() {
           if (data?.data === "OTP_SENT") {
             setLoginStep(1);
           } else if (data?.data === "SUCCESS") {
-            console.log(data);
-            localStorage.setItem("userName", encodeString(data?.userName));
-            localStorage.setItem("isFirstTimeLogin", data?.firstTimeLogin);
-            navigate(`/`);
+            localStorage.setItem("MAPEmailId",e?.emailId)
+            localStorage.setItem("MAPName",e?.firstName)
+            localStorage.setItem("MAPProfile",e?.profileUrl)
+            localStorage.setItem("MAPAddressFilled",data?.addressFilled?.toString())
+            navigate(`/profile`);
           } else {
             reset();
           }

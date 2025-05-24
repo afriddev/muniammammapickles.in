@@ -1,9 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  useGetAddressFilled,
+  useGetEmailId,
+  useGetName,
+} from "@/apputils/AppHooks";
+import AppSpinner from "@/apputils/AppSpinner";
 import { Button } from "@/components/ui/button";
+import { useCreateOrder, useVerifyOrder } from "@/hooks/user/userHooks";
 import { addToCartProductType } from "@/types/product/ProductDataTypes";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { useToast } from "@/components/ui/use-toast";
 
 function CartMain() {
   const navigate = useNavigate();
@@ -11,6 +21,14 @@ function CartMain() {
   const cartItems: addToCartProductType[] = JSON.parse(cartData as never) ?? [];
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [agreed, setAgreed] = useState<boolean>(false);
+  const emailId = useGetEmailId();
+  const { createOrder, isPending } = useCreateOrder();
+  const { Razorpay } = useRazorpay();
+  const myName = useGetName();
+  const { isPending: verifyOrderPending, verifyOrder } = useVerifyOrder();
+  const { toast } = useToast();
+  const addressFillded = useGetAddressFilled();
+  const key = process.env.REACT_APP_RAZORPAY_KEY_ID
 
   const [cartProducts, setCartProducts] =
     useState<addToCartProductType[]>(cartItems);
@@ -39,9 +57,76 @@ function CartMain() {
     setCartProducts(temp);
     localStorage.setItem("mapCartItems", JSON.stringify(temp));
   }
+  function handlePlaceOrder() {
+    if (!emailId) {
+      toast({
+        title: "Please login to continue",
+        description: "You must be logged in to place an order.",
+        variant: "constructive",
+      });
+      navigate("/login");
+    } else if (addressFillded === "true") {
+      toast({
+        title: "Please fill in your address to continue",
+        description: "We need your address to deliver your pickles!",
+        variant: "destructive", // or "constructive" if you defined a custom variant
+      });
+
+      navigate("/profile");
+    } else {
+      createOrder(
+        {
+          emailId,
+          amount: parseInt(totalPrice as any),
+        },
+        {
+          onSuccess(data) {
+            if (data?.data === "SUCCESS") {
+              handlePayment(data?.orderId, data?.amount);
+            }
+          },
+        }
+      );
+    }
+  }
+
+  function handlePayment(orderId: string, amount: number) {
+    const options: RazorpayOrderOptions = {
+      key: key as any,
+      amount,
+      currency: "INR",
+      name: "Muni Ammamma Pickles",
+      description: "Order Payment for Homemade Pickles",
+      order_id: orderId,
+      handler: (response) => {
+        if (
+          response.razorpay_order_id &&
+          response?.razorpay_payment_id &&
+          response?.razorpay_signature
+        ) {
+          verifyOrder({
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+          });
+        }
+      },
+      prefill: {
+        name: myName as any,
+        email: emailId as any,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  }
 
   return (
     <div className="flex flex-col justify-between h-full pb-4">
+      {<AppSpinner isPending={isPending || verifyOrderPending} />}
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-bold  pt-2">SHOPPING CART</h2>
         <div className=" flex flex-col gap-4 h-[65vh] overflow-auto">
@@ -159,6 +244,7 @@ function CartMain() {
           </label>
         </div>
         <Button
+          onClick={handlePlaceOrder}
           disabled={!agreed || totalPrice <= 0}
           className="w-full mt-3 bg-foreground hover:bg-foreground/90"
         >

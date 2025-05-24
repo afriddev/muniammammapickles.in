@@ -49,3 +49,20 @@ export function useImageLoader() {
     return () => observer.disconnect();
   }, []);
 }
+
+export function useGetEmailId() {
+  const emailId = localStorage.getItem("MAPEmailId");
+  return emailId;
+}
+export function useGetName() {
+  const name = localStorage.getItem("MAPName");
+  return name;
+}
+export function useGetProfileUrl() {
+  const profile = localStorage.getItem("MAPProfile");
+  return profile;
+}
+export function useGetAddressFilled() {
+  const addressFillded = localStorage.getItem("MAPAddressFilled");
+  return addressFillded?.toString();
+}
