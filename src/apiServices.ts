@@ -2,9 +2,9 @@
 import axios from "axios";
 import { useToast } from "./components/ui/use-toast";
 
-// export const BASE_URL = "https://api.muniammammapickles.in/"
+export const BASE_URL = "https://api.muniammammapickles.in/"
 
-export const BASE_URL = "http://127.0.0.1:8080/";
+// export const BASE_URL = "http://127.0.0.1:8080/";
 
 export async function getAPI(url: string) {
   const { data } = await axios.get(BASE_URL + url);
