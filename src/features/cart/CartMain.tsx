@@ -131,7 +131,7 @@ function CartMain() {
         <h2 className="text-lg font-bold  pt-2">SHOPPING CART</h2>
         <div className=" flex flex-col gap-4 h-[65vh] overflow-auto">
           {cartProducts?.length === 0 && (
-            <div className="flex flex-col items-center justify-center text-center p-6 rounded-md bg-gray-50 border border-dashed border-gray-300">
+            <div className="flex flex-col items-center justify-center border border-dashed border-[#d3bf9f] bg-[#f8efdf] p-6 text-center">
               <CiShoppingCart className="h-16 w-16" />
               <h2 className="text-lg font-semibold text-gray-700">
                 Your cart is empty
@@ -143,7 +143,7 @@ function CartMain() {
                 onClick={() => {
                   navigate("/collection");
                 }}
-                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition"
+                className="border border-[#2f1807] bg-[#2f1807] px-4 py-2 text-[#f6ecd9] transition hover:bg-[#4a2411]"
               >
                 Start Shopping
               </button>
@@ -153,7 +153,7 @@ function CartMain() {
           {cartProducts?.map((item, index) => {
             return (
               <div
-                className="gap-3 rounded flex relative  px-3 border border-foreground/10 p-2 shadow "
+                className="relative flex gap-3 border border-[#d3bf9f] bg-[#f8efdf] p-2 px-3"
                 key={index}
               >
                 <div
@@ -162,11 +162,11 @@ function CartMain() {
                     handleDelete(index);
                   }}
                 >
-                  <Trash className="w-6 h-6  bg-destructive cursor-pointer drop-shadow-md text-background p-1  shadow" />
+                  <Trash className="h-6 w-6 cursor-pointer bg-destructive p-1 text-background" />
                 </div>
                 <img
                   src={item?.imageUrl}
-                  className="h-20 rounded bg-red-400  w-20"
+                  className="h-20 w-20 border border-[#d3bf9f] object-cover"
                 />
                 <div className="flex flex-col justify-between">
                   <h2 className="font-medium text-sm">{item?.productName}</h2>
@@ -246,7 +246,7 @@ function CartMain() {
         <Button
           onClick={handlePlaceOrder}
           disabled={!agreed || totalPrice <= 0}
-          className="w-full mt-3 bg-foreground hover:bg-foreground/90"
+          className="mt-3 w-full border-[#2f1807] bg-[#2f1807] text-[#f6ecd9] shadow-none hover:bg-[#4a2411]"
         >
           Place order
         </Button>

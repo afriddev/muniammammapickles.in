@@ -16,7 +16,6 @@ import SuperAdminMain from "./features/admin/SuperAdminMain";
 import ManageUsersMain from "./features/admin/manageusers/ManageUsersMain";
 import CollectionMain from "./features/collection/CollectionMain";
 import ProductMain from "./features/product/ProductMain";
-import { useImageLoader } from "./apputils/AppHooks";
 import WhatsappWidget from "./apputils/WhatsappWidget";
 import CartMain from "./features/cart/CartMain";
 import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMain";
@@ -28,8 +27,6 @@ import ProfileMain from "./features/profile/ProfileMain";
 
 function App() {
   const queryClient = new QueryClient();
-
-  useImageLoader();
 
   return (
     <div>

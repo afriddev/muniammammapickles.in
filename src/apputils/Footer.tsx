@@ -1,145 +1,123 @@
 import { useNavigate } from "react-router-dom";
-import { FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+
+const quickLinks = [
+  { label: "Home", path: "/" },
+  { label: "Collection", path: "/collection" },
+  { label: "About", path: "/about" },
+  { label: "Contact", path: "/contact" },
+];
+
+const flavourLinks = [
+  { label: "Chicken Pickle", path: "/collection" },
+  { label: "Mutton Pickle", path: "/collection" },
+  { label: "Mango Pickle", path: "/collection" },
+  { label: "Pandu Mirchi", path: "/collection" },
+];
+
+const legalLinks = [
+  { label: "Privacy Policy", path: "/privacy-policy" },
+  { label: "Terms of Service", path: "/terms" },
+  { label: "Cookie Policy", path: "/cookie-policy" },
+  { label: "Refund Policy", path: "/refund-policy" },
+];
 
 function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer className="bg-background text-foreground w-full lg:pt-16 pb-10 px-8 md:px-16 mt-10">
-      <div className="w-full  mx-auto grid grid-cols-1 md:grid-cols-5 gap-16 items-center">
-        {/* Brand */}
-        <div className="flex flex-col  space-y-4 items-center">
-          <div className="cursor-pointer  w-fit    ">
-            <img src="/final.png" className="h-[20vh] lg:h-[20vh]" />
+    <footer className="border-t border-[#c8af8d] bg-[#24110b] text-[#f6ebd1]">
+      <div className="mx-auto max-w-[1600px] px-6 py-14 lg:px-10 lg:py-16">
+        <div className="grid gap-px bg-[#5c3a24] lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.9fr]">
+          <div className="bg-[#2e1710] p-6 lg:p-8">
+            <img
+              src="/final.png"
+              alt="Muni Ammamma Pickles"
+              className="h-24 w-24 border border-[#c8af8d] bg-[#ead8b8] object-cover"
+            />
+            <h2 className="mt-5 font-fraunces text-4xl leading-none text-[#fff4df]">
+              Authentic Telugu pickles for everyday meals and gifting.
+            </h2>
+            <p className="mt-4 max-w-[340px] text-sm leading-7 text-[#e2ccb0]">
+              Chicken, mutton, mango, and pandu mirchi jars made for rice,
+              dosa, paratha, and family tables that want real flavour.
+            </p>
+            <Button
+              className="mt-6 h-11 border-[#f0d4a1] bg-[#f0d4a1] px-5 text-xs uppercase tracking-[0.18em] text-[#24110b] shadow-none hover:bg-[#ddb768]"
+              onClick={() => navigate("/collection")}
+            >
+              Shop Collection
+            </Button>
           </div>
-          <p className="text-sm w-full text-center">
-            Bringing families together with authentic, home-style pickles.
-          </p>
-        </div>
 
-        {/* Quick Links */}
-        <div className="flex flex-col items-start space-y-4">
-          <h3 className="text-lg font-semibold">Quick Links</h3>
-          <div className=" text-sm flex  items-center gap-4">
-            <button
-              onClick={() => navigate("/about")}
-              className="hover:text-blue-300 transition duration-300 text-left"
-            >
-              About Us
-            </button>
-            <button
-              onClick={() => navigate("/contact")}
-              className="hover:text-blue-300 transition duration-300 text-left"
-            >
-              Contact
-            </button>
-            <button
-              onClick={() => navigate("/faq")}
-              className="hover:text-blue-300 transition duration-300 text-left"
-            >
-              FAQ
-            </button>
+          <div className="bg-[#24110b] p-6 lg:p-8">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[#f0d4a1]">
+              Quick Links
+            </p>
+            <div className="mt-5 flex flex-col border-t border-[#5c3a24]">
+              {quickLinks.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className="border-b border-[#5c3a24] py-3 text-left text-sm uppercase tracking-[0.18em] text-[#fff4df]"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Legal */}
-        <div className="flex flex-col items-start space-y-4">
-          <h3 className="text-lg font-semibold">Legal</h3>
-          <div className=" text-sm  gap-3 lg:gap-0 grid lg:grid-cols-2  items-start">
-            <button
-              onClick={() => navigate("/privacy-policy")}
-              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
-            >
-              Privacy Policy
-            </button>
-            <button
-              onClick={() => navigate("/terms")}
-              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
-            >
-              Terms of Service
-            </button>
-
-            <button
-              onClick={() => navigate("/cookie-policy")}
-              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
-            >
-              Cookie Policy
-            </button>
-
-            <button
-              onClick={() => navigate("/refund-policy")}
-              className="hover:text-blue-300 transition duration-300 text-left text-nowrap"
-            >
-              refund Policy
-            </button>
+          <div className="bg-[#24110b] p-6 lg:p-8">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[#f0d4a1]">
+              Best Sellers
+            </p>
+            <div className="mt-5 flex flex-col border-t border-[#5c3a24]">
+              {flavourLinks.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => navigate(item.path)}
+                  className="border-b border-[#5c3a24] py-3 text-left text-sm uppercase tracking-[0.18em] text-[#fff4df]"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Social Media */}
-        <div className="flex flex-col items-start space-y-4">
-          <h3 className="text-lg font-semibold">Connect With Us</h3>
-          <div className="flex gap-6 text-2xl">
-            <button
-              onClick={() => navigate("/twitter")}
-              aria-label="Twitter"
-              className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-            >
-              <FaTwitter />
-            </button>
-            <button
-              onClick={() => navigate("/instagram")}
-              aria-label="Instagram"
-              className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-            >
-              <FaInstagram />
-            </button>
-            <button
-              onClick={() => navigate("/linkedin")}
-              aria-label="LinkedIn"
-              className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-            >
-              <FaLinkedinIn />
-            </button>
+          <div className="bg-[#24110b] p-6 lg:p-8">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[#f0d4a1]">
+              Store Info
+            </p>
+            <div className="mt-5 border-t border-[#5c3a24] pt-5 text-sm leading-7 text-[#e2ccb0]">
+              <p>For product questions and order help:</p>
+              <button
+                className="mt-3 block text-left text-sm uppercase tracking-[0.18em] text-[#fff4df]"
+                onClick={() =>
+                  window.open(
+                    "mailto:afridayan01@gmail.com?subject=Muni Ammamma Pickles enquiry"
+                  )
+                }
+              >
+                afridayan01@gmail.com
+              </button>
+            </div>
+            <div className="mt-6 flex flex-col border-t border-[#5c3a24]">
+              {legalLinks.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className="border-b border-[#5c3a24] py-3 text-left text-sm uppercase tracking-[0.18em] text-[#fff4df]"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="w-full h-[1px] bg-foreground/5 mt-10"> </div>
 
-      {/* Bottom Section */}
-      <div className="w-full flex flex-col md:flex-row justify-between items-center mt-5 border-t border-white/20 text-center text-sm text-foreground gap-2">
-        <p>© 2025 Muni ammamma pickles. All rights reserved.</p>
-        <p className="">
-          Developed by{" "}
-          <span
-            className="text-primary  cursor-pointer"
-            onClick={() =>
-              window.open(
-                "mailto:afridayan01@gmail.com?subject=Software development collaboration"
-              )
-            }
-          >
-            Shaik afrid💙
-          </span>
-        </p>
-        <div className="flex space-x-6 lg:mt-4 md:mt-0">
-          <button
-            onClick={() => navigate("/twitter")}
-            className="hover:underline"
-          >
-            Twitter
-          </button>
-          <button
-            onClick={() => navigate("/linkedin")}
-            className="hover:underline"
-          >
-            LinkedIn
-          </button>
-          <button
-            onClick={() => navigate("/instagram")}
-            className="hover:underline"
-          >
-            Instagram
-          </button>
+        <div className="mt-6 flex flex-col gap-3 border-t border-[#5c3a24] pt-5 text-[11px] uppercase tracking-[0.24em] text-[#f0d4a1] lg:flex-row lg:items-center lg:justify-between">
+          <p>© 2026 Muni Ammamma Pickles</p>
+          <p>Small-batch Telugu pickles for everyday meals and gifting.</p>
         </div>
       </div>
     </footer>

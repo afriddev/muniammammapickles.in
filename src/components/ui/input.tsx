@@ -55,7 +55,7 @@ const Input = React.forwardRef<HTMLInputElement, InputInterface>(
               type={type}
               data-slot="input"
               className={cn(
-                "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-border flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ",
+                "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-border flex h-9 w-full min-w-0 rounded-none border bg-transparent px-3 py-1 text-base shadow-none transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ",
                 "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[1px]",
                 "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
                 `${icon && "pl-7"}`,
@@ -65,7 +65,7 @@ const Input = React.forwardRef<HTMLInputElement, InputInterface>(
             />
             {onClear && props?.value && (
               <div
-                className="absolute  right-2 cursor-pointer w-5 h-5 bg-gray-100 lg:hover:bg-gray-300 flex items-center justify-center rounded-full"
+                className="absolute right-2 flex h-5 w-5 cursor-pointer items-center justify-center border border-[#c8af8d] bg-[#f7edd9] lg:hover:bg-[#ead8b8]"
                 onClick={onClear}
               >
                 <X className="h-4 w-4" />

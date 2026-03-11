@@ -1,93 +1,120 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import CartMain from "@/features/cart/CartMain";
 import { useEffect, useState } from "react";
 import { useGetEmailId, useGetProfileUrl } from "./AppHooks";
+
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "Collection", path: "/collection" },
+  { label: "About", path: "/about" },
+  { label: "Contact", path: "/contact" },
+];
+
 function NavBar() {
   const navigate = useNavigate();
-  const [openCart, setOpenCart] = useState<boolean>(false);
   const location = useLocation();
+  const [openCart, setOpenCart] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const emailId = useGetEmailId();
   const profileUrl = useGetProfileUrl();
 
   useEffect(() => {
     setOpenCart(false);
+    setOpenMenu(false);
   }, [location]);
 
+  function isActive(path: string) {
+    if (path === "/") {
+      return location.pathname === "/" || location.pathname === "/home";
+    }
+
+    return location.pathname.startsWith(path);
+  }
+
   return (
-    <header className="w-full sticky top-0 z-[200] bg-white/80 backdrop-blur-md border-b border-gray-200">
-      <div className="px-5 lg:px-20 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div
-          onClick={() => navigate("/")}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <div className="flex relative">
-            <div className="w-6 h-3 rotate-90 rounded-t-full bg-secondary"></div>
-            <div className="w-6 h-3 rotate-180 -mt-3 -ml-3 rounded-t-full bg-secondary"></div>
-          </div>
-          <h1 className="text-xl lg:text-2xl font-bold text-secondary -ml-2 mt-1 tracking-tight">
-            Muni Ammamma Pickles
-          </h1>
+    <header className="sticky top-0 z-[200] border-b border-[#c8af8d] bg-[#f6ebd1]/95 backdrop-blur">
+      <div className="border-b border-[#8c3618] bg-[#d9b24c]">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-3 text-[10px] uppercase tracking-[0.32em] text-[#24110b] lg:px-10">
+          <p>Handmade Andhra pickles</p>
+          <p className="hidden font-semibold md:block">Packed fresh. Built for repeat orders.</p>
         </div>
+      </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-          >
-            Home
-          </button>
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-5 py-4 lg:px-10">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-3 text-left"
+        >
+          <img
+            src="/final.png"
+            alt="Muni Ammamma Pickles"
+            className="h-12 w-12 border border-[#c8af8d] bg-[#ead8b8] object-cover"
+          />
+          <div>
+            <p className="font-fraunces text-[2rem] leading-none text-[#24110b]">
+              Muni Ammamma
+            </p>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.34em] text-[#8c3618]">
+              Pickles
+            </p>
+          </div>
+        </button>
 
-          <button
-            onClick={() => navigate("/collection")}
-            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-          >
-            Products
-          </button>
-          <button
-            onClick={() => navigate("/about")}
-            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-          >
-            About
-          </button>
-          <Sheet
-            onOpenChange={(open: boolean) => {
-              setOpenCart(open);
-            }}
-            open={openCart}
-          >
+        <nav className="hidden items-center gap-8 lg:flex">
+          {navItems.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`border-b pb-1 text-sm uppercase tracking-[0.18em] transition-colors ${
+                isActive(item.path)
+                  ? "border-[#8c3618] text-[#24110b]"
+                  : "border-transparent text-[#6d4426] hover:border-[#8c3618] hover:text-[#24110b]"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <Sheet open={openCart} onOpenChange={setOpenCart}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="w-5 h-5 text-blue-600" />
+              <Button
+                variant="outline"
+                className="h-11 border-[#24110b] bg-transparent px-5 text-xs uppercase tracking-[0.18em] text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                Cart
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="px-3 z-[999]">
+            <SheetContent
+              side="right"
+              className="border-l border-[#c8af8d] bg-[#f6ebd1] p-4 shadow-none"
+            >
               <CartMain />
             </SheetContent>
           </Sheet>
 
           {emailId ? (
-            <div
-              className="w-10 h-10 cursor-pointer "
-              onClick={() => {
-                navigate("/profile");
-              }}
+            <button
+              onClick={() => navigate("/profile")}
+              className="flex items-center gap-3 border border-[#24110b] px-3 py-2"
             >
               <img
-                src={profileUrl ? profileUrl : "/default_profile.webp"}
-                className="h-10 w-10 object-fill rounded-full"
-                alt="profile"
+                src={profileUrl || "/default_profile.webp"}
+                alt="Profile"
+                className="h-9 w-9 border border-[#c8af8d] object-cover"
               />
-            </div>
+              <span className="text-xs uppercase tracking-[0.18em] text-[#24110b]">
+                Account
+              </span>
+            </button>
           ) : (
             <Button
-              variant="outline"
-              className="border-blue-500 text-blue-600 hover:bg-blue-50"
+              className="h-11 border-[#24110b] bg-[#24110b] px-5 text-xs uppercase tracking-[0.18em] text-[#f6ebd1] shadow-none hover:bg-[#3c1d10]"
               onClick={() => navigate("/login")}
             >
               Login
@@ -95,151 +122,81 @@ function NavBar() {
           )}
         </div>
 
-        <div className="lg:hidden flex gap-2">
-          <Sheet
-            onOpenChange={(open: boolean) => {
-              setOpenCart(open);
-            }}
-            open={openCart}
-          >
-            <SheetTrigger className="border border-primary/40" asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="w-5 h-5 text-blue-600" />
+        <div className="flex items-center gap-2 lg:hidden">
+          <Sheet open={openCart} onOpenChange={setOpenCart}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-[#24110b] bg-transparent text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+              >
+                <ShoppingBag className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full max-w-sm p-4 space-y-4 z-[999]"
+              className="w-full max-w-sm border-l border-[#c8af8d] bg-[#f6ebd1] p-4 shadow-none"
             >
               <CartMain />
             </SheetContent>
           </Sheet>
-          <Sheet>
-            <SheetTrigger asChild className="border border-primary/40">
-              <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5 text-blue-600" />
+
+          <Sheet open={openMenu} onOpenChange={setOpenMenu}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-[#24110b] bg-transparent text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+              >
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="h-full flex  flex-col justify-between py-10 z-[999]"
+              className="border-l border-[#c8af8d] bg-[#f6ebd1] p-0 shadow-none"
             >
-              <div className="flex flex-col gap-4 p-6  justify-between  h-full">
-                <div
-                  onClick={() => navigate("/")}
-                  className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer "
-                >
-                  Home
+              <div className="flex h-full flex-col justify-between">
+                <div className="px-6 py-20">
+                  <div className="border-b border-[#c8af8d] pb-6">
+                    <p className="font-fraunces text-4xl leading-none text-[#24110b]">
+                      Store Menu
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-[#5a3822]">
+                      Pick a flavour, open the collection, and order fast.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex flex-col border-t border-[#c8af8d]">
+                    {navItems.map((item) => (
+                      <button
+                        key={item.path}
+                        onClick={() => navigate(item.path)}
+                        className="border-b border-[#c8af8d] py-4 text-left text-sm uppercase tracking-[0.18em] text-[#24110b]"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div
-                  onClick={() => navigate("/collection")}
-                  className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer"
-                >
-                  Products
-                </div>
-                <div
-                  onClick={() => navigate("/about")}
-                  className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer"
-                >
-                  About
-                </div>
-                {emailId ? (
-                  <div className="flex  items-center gap-2 ">
-                    <img
-                      src={profileUrl ? profileUrl : "/default_profile.webp"}
-                      className="h-10 w-10 object-fill rounded-full"
-                      alt="profile"
-                    />
-                    <div
+
+                <div className="border-t border-[#c8af8d] px-6 py-6">
+                  {emailId ? (
+                    <Button
+                      variant="outline"
+                      className="w-full border-[#24110b] bg-transparent text-xs uppercase tracking-[0.18em] text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
                       onClick={() => navigate("/profile")}
-                      className="text-base font-medium text-gray-800 hover:text-blue-600 cursor-pointer"
                     >
-                      Profile
-                    </div>
-                  </div>
-                ) : (
-                  <Button
-                    variant="outline"
-                    className="w-full border-blue-500 text-blue-600 hover:bg-blue-50"
-                    onClick={() => navigate("/login")}
-                  >
-                    Login
-                  </Button>
-                )}
-
-                <div className="flex flex-col items-start space-y-4">
-                  <h3 className="text-lg font-semibold">Legal</h3>
-                  <div className=" text-sm flex gap-3 lg:gap-0 flex-col  items-start">
-                    <button
-                      onClick={() => navigate("/privacy-policy")}
-                      className="hover:text-blue-300 transition duration-300 text-left"
+                      My Account
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full border-[#24110b] bg-[#24110b] text-xs uppercase tracking-[0.18em] text-[#f6ebd1] shadow-none hover:bg-[#3c1d10]"
+                      onClick={() => navigate("/login")}
                     >
-                      Privacy Policy
-                    </button>
-                    <button
-                      onClick={() => navigate("/terms")}
-                      className="hover:text-blue-300 transition duration-300 text-left "
-                    >
-                      Terms of Service
-                    </button>
-
-                    <button
-                      onClick={() => navigate("/cookie-policy")}
-                      className="hover:text-blue-300 transition duration-300 text-left "
-                    >
-                      Cookie Policy
-                    </button>
-
-                    <button
-                      onClick={() => navigate("/refund-policy")}
-                      className="hover:text-blue-300 transition duration-300 text-left "
-                    >
-                      Refund Policy
-                    </button>
-                  </div>
+                      Login
+                    </Button>
+                  )}
                 </div>
-                <div className="flex flex-col items-start space-y-4">
-                  <h3 className="text-lg font-semibold">Connect With Us</h3>
-                  <div className="flex gap-6 text-2xl">
-                    <button
-                      onClick={() => navigate("/twitter")}
-                      aria-label="Twitter"
-                      className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-                    >
-                      <FaTwitter />
-                    </button>
-                    <button
-                      onClick={() => navigate("/instagram")}
-                      aria-label="Instagram"
-                      className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-                    >
-                      <FaInstagram />
-                    </button>
-                    <button
-                      onClick={() => navigate("/linkedin")}
-                      aria-label="LinkedIn"
-                      className="border border-white rounded-full p-3 hover:bg-white hover:text-foreground transition duration-300"
-                    >
-                      <FaLinkedinIn />
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className=" p-5 w-full flex flex-col md:flex-row justify-between items-center mt-5 border-t border-white/20 text-center text-sm text-foreground/50 gap-2">
-                <p>© 2025 Muni ammamma pickles. All rights reserved.</p>
-                <p className="">
-                  Developed by{" "}
-                  <span
-                    className="text-primary  cursor-pointer"
-                    onClick={() =>
-                      window.open(
-                        "mailto:afridayan01@gmail.com?subject=Software development collaboration"
-                      )
-                    }
-                  >
-                    Shaik afrid💙{" "}
-                  </span>
-                </p>
               </div>
             </SheetContent>
           </Sheet>
