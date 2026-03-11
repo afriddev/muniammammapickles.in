@@ -25,13 +25,8 @@ function RouteTransitionLoader() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[500] flex items-center justify-center bg-[#f5efe4]/55 backdrop-blur-[2px]">
-      <div className="flex items-center gap-4 border border-[#b7a189] bg-[#f7f1e8] px-5 py-4">
-        <div className="h-6 w-6 animate-spin border border-[#d79b45] border-t-[#201610]" />
-        <p className="text-[11px] uppercase tracking-[0.28em] text-[#6a4c37]">
-          Loading
-        </p>
-      </div>
+    <div className="pointer-events-none fixed inset-0 z-[500] flex items-center justify-center bg-[#f5efe4]/38 backdrop-blur-[1.5px]">
+      <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-[#d8c0a1] border-t-[#8a4027]" />
     </div>
   );
 }

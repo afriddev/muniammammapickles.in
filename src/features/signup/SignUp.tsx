@@ -104,22 +104,14 @@ function SignUp() {
       <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
         Join the store
       </p>
-      <h2 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610]">
+      <h2 className="mt-3 font-fraunces text-[2.4rem] leading-[1.04] tracking-[-0.03em] text-[#201610] lg:text-[3rem]">
         {signUpStep === 0 ? "Create your account" : "Verify your signup"}
       </h2>
-      <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+      <p className="mt-3 max-w-[520px] text-sm leading-7 text-[#5f4633]">
         {signUpStep === 0
           ? "Use email signup or continue with Google to start ordering faster."
           : "Enter the OTP sent to your email address to activate the account."}
       </p>
-
-      {signUpStep === 0 ? (
-        <div className="mt-8 border border-[#b7a189] bg-[#eee1cf] p-5">
-          <div className="flex items-center justify-center">
-            <GoogleLogin onSuccess={handleGoogleSignInSuccess} onError={() => undefined} />
-          </div>
-        </div>
-      ) : null}
 
       <div className="mt-6 border-t border-[#b7a189] pt-6">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
@@ -244,6 +236,19 @@ function SignUp() {
           </div>
         </form>
       </div>
+
+      {signUpStep === 0 ? (
+        <div className="mt-6 border-t border-[#b7a189] pt-5">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+            Or continue with Google
+          </p>
+          <div className="mt-4 border border-[#b7a189] bg-[#eee1cf] p-5">
+            <div className="flex items-center justify-center">
+              <GoogleLogin onSuccess={handleGoogleSignInSuccess} onError={() => undefined} />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </AuthShell>
   );
 }

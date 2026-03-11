@@ -23,10 +23,10 @@ const AppSpinner: React.FC<AppSpinnerProps> = ({ isPending, message }) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300 ease-in-out">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#201610]/20 backdrop-blur-[2px] transition-opacity duration-300 ease-in-out">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin shadow-xl" />
-        {message && <p className="text-white text-sm font-medium">{message}</p>}
+        <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-[#f0dfc8] border-t-[#8a4027]" />
+        {message ? <p className="text-[#fffaf2] text-sm font-medium">{message}</p> : null}
       </div>
     </div>
   );

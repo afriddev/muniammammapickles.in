@@ -101,7 +101,7 @@ function LoginMain() {
       <h2 className="mt-3 font-fraunces text-[2.4rem] leading-[1.04] tracking-[-0.03em] text-[#201610] lg:text-[3rem]">
         {loginStep === 0 ? "Login to your account" : "Enter the OTP to continue"}
       </h2>
-      <p className="mt-3 text-sm leading-7 text-[#5f4633]">
+      <p className="mt-3 max-w-[500px] text-sm leading-7 text-[#5f4633]">
         {loginStep === 0
           ? "Use email and password or continue with Google."
           : "We sent a verification code to your email address."}
