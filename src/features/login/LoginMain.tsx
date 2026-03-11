@@ -34,7 +34,7 @@ function LoginMain() {
       {
         emailId: data.emailId,
         password: data.password,
-        otp: data.otp,
+        otp: data.otp ? parseInt(data.otp, 10) : undefined,
       },
       {
         onSuccess(response) {
@@ -64,6 +64,7 @@ function LoginMain() {
     login(
       {
         emailId: googleAuthResponse?.email,
+        password: "",
         googleLogin: true,
         firstName: googleAuthResponse?.name,
         profileUrl: googleAuthResponse?.picture,
@@ -97,22 +98,14 @@ function LoginMain() {
       <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
         Welcome back
       </p>
-      <h2 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610]">
+      <h2 className="mt-3 font-fraunces text-[2.4rem] leading-[1.04] tracking-[-0.03em] text-[#201610] lg:text-[3rem]">
         {loginStep === 0 ? "Login to your account" : "Enter the OTP to continue"}
       </h2>
-      <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+      <p className="mt-3 text-sm leading-7 text-[#5f4633]">
         {loginStep === 0
           ? "Use email and password or continue with Google."
           : "We sent a verification code to your email address."}
       </p>
-
-      {loginStep === 0 ? (
-        <div className="mt-8 border border-[#b7a189] bg-[#eee1cf] p-5">
-          <div className="flex items-center justify-center">
-            <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={() => undefined} />
-          </div>
-        </div>
-      ) : null}
 
       <div className="mt-6 border-t border-[#b7a189] pt-6">
         <form onSubmit={handleSubmit(handleLoginSubmit)} className="grid gap-5">
@@ -179,6 +172,19 @@ function LoginMain() {
           </div>
         </form>
       </div>
+
+      {loginStep === 0 ? (
+        <div className="mt-6 border-t border-[#b7a189] pt-5">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+            Or continue with Google
+          </p>
+          <div className="mt-4 border border-[#b7a189] bg-[#eee1cf] p-5">
+            <div className="flex items-center justify-center">
+              <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={() => undefined} />
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-6 border-t border-[#b7a189] pt-5 text-sm leading-7 text-[#5f4633]">
         Do not have an account yet? {" "}

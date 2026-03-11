@@ -20,61 +20,32 @@ function AuthShell({ eyebrow, title, intro, stats, children }: AuthShellProps) {
     <div className="min-h-screen bg-[#f5efe4] text-[#201610]">
       <NavBar />
       <main>
-        <section className="border-b border-[#5a4332] bg-[#201610] text-[#f5efe4]">
-          <div className="mx-auto grid max-w-[1600px] gap-px bg-[#5a4332] lg:grid-cols-[0.96fr_1.04fr]">
-            <div className="bg-[#201610] px-6 py-14 lg:px-10 lg:py-20">
-              <p className="text-[11px] uppercase tracking-[0.34em] text-[#d79b45]">
+        <section className="border-b border-[#b7a189] bg-[#eee1cf]">
+          <div className="mx-auto max-w-[1100px] px-6 py-10 lg:px-10 lg:py-14">
+            <div className="border border-[#b7a189] bg-[#f7f1e8] p-6 lg:p-8">
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
                 {eyebrow}
               </p>
-              <h1 className="mt-5 max-w-[760px] font-fraunces text-[3rem] leading-[1.02] tracking-[-0.04em] text-[#fffaf2] lg:text-[5rem]">
+              <h1 className="mt-4 max-w-[840px] font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610] lg:text-[4.2rem]">
                 {title}
               </h1>
-              <p className="mt-6 max-w-[660px] text-base leading-8 text-[#dcc9b4] lg:text-lg">
+              <p className="mt-4 max-w-[860px] text-sm leading-7 text-[#5f4633]">
                 {intro}
               </p>
-              <div className="mt-10 grid gap-px bg-[#5a4332] sm:grid-cols-3">
+              <div className="mt-6 grid gap-px bg-[#b7a189] sm:grid-cols-3">
                 {stats.map((stat) => (
-                  <div key={stat.label} className="bg-[#2e1710] p-5">
-                    <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">
+                  <div key={stat.label} className="bg-[#eee1cf] p-4">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-[#8a4027]">
                       {stat.label}
                     </p>
-                    <p className="mt-4 font-fraunces text-[1.9rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                    <p className="mt-3 font-fraunces text-[1.5rem] leading-[1.06] tracking-[-0.02em] text-[#201610]">
                       {stat.value}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="grid gap-px bg-[#5a4332] md:grid-cols-2">
-              <div className="overflow-hidden bg-[#e7d6c3] md:col-span-2">
-                <img
-                  src="/banner_image.jpg"
-                  alt="Signature pickle spread"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="overflow-hidden bg-[#e7d6c3]">
-                <img
-                  src="/final.png"
-                  alt="Muni Ammamma brand mark"
-                  className="h-full w-full object-contain p-8"
-                />
-              </div>
-              <div className="overflow-hidden bg-[#e7d6c3]">
-                <img
-                  src="/mango/mango_pickle.webp"
-                  alt="Mango pickle bowl"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#eee1cf]">
-          <div className="mx-auto max-w-[1600px] px-6 py-14 lg:px-10 lg:py-20">
-            <div className="mx-auto max-w-[760px] border border-[#b7a189] bg-[#f7f1e8] p-6 lg:p-10">
+            <div className="mt-6 border border-[#b7a189] bg-[#f7f1e8] p-6 lg:p-8">
               {children}
             </div>
           </div>

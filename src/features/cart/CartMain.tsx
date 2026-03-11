@@ -94,6 +94,27 @@ function CartMain({ mode = "sheet" }: CartMainProps) {
     updateItems(nextItems);
   }
 
+  function getCartImage(item: addToCartProductType) {
+    if (item.imageUrl) {
+      return item.imageUrl;
+    }
+
+    switch (item.productId) {
+      case "Chicken-pickle-boneless":
+        return "/chicken/chicken_bone_less.jpeg";
+      case "Chicken-pickle-bone":
+        return "/chicken/chicken_bone.webp";
+      case "mango-pickle":
+        return "/mango/mango_pickle.webp";
+      case "mutton-pickle":
+        return "/mutton/mutton_pickle.webp";
+      case "pandu-mirchi-pickle":
+        return "/pandu_mirchi/pandu_mirchi.webp";
+      default:
+        return "/banner_mobile.png";
+    }
+  }
+
   function handlePayment(orderId: string, amount: number) {
     if (!key || !Razorpay) {
       toast({
@@ -266,6 +287,7 @@ function CartMain({ mode = "sheet" }: CartMainProps) {
                   item.size === 4 ? "250g" : item.size === 2 ? "500g" : "1kg";
                 const unitPrice = Math.round(item.price / item.size);
                 const lineTotal = unitPrice * item.quantity;
+                const imageSrc = getCartImage(item);
 
                 return (
                   <article
@@ -281,11 +303,14 @@ function CartMain({ mode = "sheet" }: CartMainProps) {
                     >
                       <div className="bg-[#e7d6c3]">
                         <img
-                          src={item.imageUrl}
+                          src={imageSrc}
                           alt={item.productName}
                           className={`w-full object-cover ${
                             isPage ? "h-full min-h-[210px]" : "h-full min-h-[132px]"
                           }`}
+                          onError={(event) => {
+                            event.currentTarget.src = "/banner_mobile.png";
+                          }}
                         />
                       </div>
 
