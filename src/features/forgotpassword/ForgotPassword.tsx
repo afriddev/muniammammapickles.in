@@ -1,89 +1,93 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Input } from "@/components/ui/input";
+import AuthShell from "@/apputils/AuthShell";
+import AppSpinner from "@/apputils/AppSpinner";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useForogotPassword } from "@/hooks/auth/forgotPasswordHooks";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useForogotPassword } from "@/hooks/auth/forgotPasswordHooks";
-import PageWrapper from "@/apputils/PageWrapper";
-import AppSpinner from "@/apputils/AppSpinner";
-import NavBar from "@/apputils/NavBar";
-import Footer from "@/apputils/Footer";
 
 function ForgotPassword() {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
-    reset
   } = useForm();
   const { isPending, forgotPassword } = useForogotPassword();
 
   function onSubmit(data: any) {
-    forgotPassword({
-      emailId:data?.email
-    },{
-      onSuccess(data) {
-        if(data?.data === "SUCCESS"){
-          reset()
-
-        }
-      },
-    })
+    forgotPassword(
+      { emailId: data?.email },
+      {
+        onSuccess(response) {
+          if (response?.data === "SUCCESS") {
+            reset();
+          }
+        },
+      }
+    );
   }
 
   return (
-    <PageWrapper>
+    <AuthShell
+      eyebrow="Forgot password"
+      title="Reset links should be simple, not buried under old UI."
+      intro="Enter your email address and we will send the reset instructions needed to secure your account and get you back into checkout."
+      stats={[
+        { label: "Reset method", value: "Email link" },
+        { label: "Account recovery", value: "Direct" },
+        { label: "Next step", value: "Reset password" },
+      ]}
+    >
       <AppSpinner isPending={isPending} />
-      <div className="flex flex-col ">
-        <div className="flex flex-col h-[95vh]">
-          <NavBar />
-          <div className="flex flex-col items-center justify-center h-full w-full">
-            <div className=" mx-auto mt-20 px-6 py-10 bg-white ">
-              <h2 className="text-3xl font-bold text-center text-blue-950 mb-4">
-                Forgot Password?
-              </h2>
-              <p className="text-sm text-gray-600 text-center mb-6">
-                Enter your email to receive a password reset link.
-              </p>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                <Input
-                  label="Email"
-                  type="email"
-                  placeholder="Enter your Email"
-                  errorMessage={errors.email?.message}
-                  {...register("email", {
-                    required: "Please enter Email",
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: "Enter a valid email address",
-                    },
-                  })}
-                />
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  Send Reset Link
-                </Button>
-              </form>
-              <p className="text-sm mt-6 text-center text-gray-700">
-                Remember your password?{" "}
-                <span
-                  onClick={() => navigate("/login")}
-                  className="text-blue-700 font-semibold cursor-pointer hover:underline"
-                >
-                  Login here
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
+      <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+        Account recovery
+      </p>
+      <h2 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610]">
+        Send a password reset link
+      </h2>
+      <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+        Use the email tied to your account so we can send the recovery link.
+      </p>
 
-        <Footer />
+      <div className="mt-6 border-t border-[#b7a189] pt-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
+          <Input
+            mandatory
+            label="Email address"
+            type="email"
+            placeholder="you@example.com"
+            errorMessage={errors.email?.message}
+            className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+            {...register("email", {
+              required: "Please enter your email address",
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Enter a valid email address",
+              },
+            })}
+          />
+
+          <div className="flex flex-col gap-3 border-t border-[#b7a189] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="text-left text-sm uppercase tracking-[0.18em] text-[#8a4027]"
+            >
+              Back to login
+            </button>
+            <Button
+              disabled={isSubmitting}
+              className="h-12 border-[#201610] bg-[#201610] px-8 text-xs uppercase tracking-[0.18em] text-[#f5efe4] hover:bg-[#3d1d10]"
+            >
+              Send reset link
+            </Button>
+          </div>
+        </form>
       </div>
-    </PageWrapper >
+    </AuthShell>
   );
 }
 

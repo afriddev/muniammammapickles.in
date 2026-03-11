@@ -11,13 +11,14 @@ import AboutUs from "./features/about-us/AboutUs";
 import ResetPassword from "./features/resetpassword/ResetPassword";
 import ForgotPassword from "./features/forgotpassword/ForgotPassword";
 import ScrollToTop from "./apputils/ScrollToTop";
+import RouteTransitionLoader from "./apputils/RouteTransitionLoader";
 import AdminWrapper from "./apputils/AdminWrapper";
 import SuperAdminMain from "./features/admin/SuperAdminMain";
 import ManageUsersMain from "./features/admin/manageusers/ManageUsersMain";
 import CollectionMain from "./features/collection/CollectionMain";
 import ProductMain from "./features/product/ProductMain";
 import WhatsappWidget from "./apputils/WhatsappWidget";
-import CartMain from "./features/cart/CartMain";
+import CartPage from "./features/cart/CartPage";
 import ManageProductsMain from "./features/admin/manageproducts/ManageProductsMain";
 import { Toaster } from "./components/ui/toaster";
 import RefundPolicyPage from "./features/refund-policy/RefundPolicyMain";
@@ -33,6 +34,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <ScrollToTop />
+          <RouteTransitionLoader />
           <WhatsappWidget />
 
           <Routes>
@@ -52,9 +54,9 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/collection" element={<CollectionMain />} />
             <Route path="/product/:id" element={<ProductMain />} />
-            <Route path="/cart" element={<CartMain />} />
+            <Route path="/cart" element={<CartPage />} />
 
-            <Route element={<Protected/>}>
+            <Route element={<Protected />}>
             <Route path="/profile" element={<ProfileMain />} /> 
             </Route>
             <Route element={<AdminWrapper />}>

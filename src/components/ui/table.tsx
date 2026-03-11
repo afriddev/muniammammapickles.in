@@ -30,10 +30,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn(
-      "[&_tr:last-child]:border-0 sticky z-[998] top-0 left-0",
-      className
-    )}
+    className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
 ));

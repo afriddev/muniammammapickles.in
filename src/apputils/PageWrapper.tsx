@@ -36,13 +36,9 @@ export default function PageWrapper({
         initial="initial"
         animate="animate"
         exit="exit"
+        className="w-full"
         style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          willChange: "opacity, transform", // helps smooth performance
+          willChange: "opacity, transform",
         }}
       >
         {children}

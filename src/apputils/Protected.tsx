@@ -14,27 +14,40 @@ function Protected() {
     if (!emailId) {
       navigate("/login");
     }
-  }, [emailId]);
+  }, [emailId, navigate]);
 
   function handleLogout() {
-    navigate("/");
     localStorage.removeItem("MAPEmailId");
     localStorage.removeItem("MAPName");
     localStorage.removeItem("MAPProfile");
     localStorage.removeItem("MAPAddressFilled");
+    navigate("/");
   }
 
   return (
-    <div className="flex flex-col ">
+    <div className="min-h-screen bg-[#f5efe4] text-[#201610]">
       <NavBar />
-      <div className="relative">
-        <div className="absolute right-10 top-5">
-          <Button onClick={handleLogout} variant={"destructive"}>
-            Logout <IoIosLogOut className="h-6 w-6 text-background" />
-          </Button>
-        </div>
+      <main>
+        <section className="border-b border-[#b7a189] bg-[#f7f1e8]">
+          <div className="mx-auto flex max-w-[1600px] flex-col gap-5 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">Account center</p>
+              <h1 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610] lg:text-[4.2rem]">
+                Manage your profile and delivery details.
+              </h1>
+            </div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="h-12 border-[#201610] bg-transparent px-6 text-xs uppercase tracking-[0.18em] text-[#201610] hover:bg-[#201610] hover:text-[#f5efe4]"
+            >
+              Logout
+              <IoIosLogOut className="h-5 w-5" />
+            </Button>
+          </div>
+        </section>
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   );

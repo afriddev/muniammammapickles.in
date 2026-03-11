@@ -17,6 +17,10 @@
 
 .font-fraunces {
   font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-feature-settings: "kern" 1, "liga" 1, "clig" 1;
+  text-rendering: optimizeLegibility;
+  text-wrap: balance;
 }
 
 .font-manrope {
@@ -26,7 +30,6 @@
 img {
   display: block;
   max-width: 100%;
-  height: auto;
 }
 
 @layer base {

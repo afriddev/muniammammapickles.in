@@ -1,285 +1,287 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-
+import AppSpinner from "@/apputils/AppSpinner";
+import { useGetEmailId, useGetName, useGetProfileUrl } from "@/apputils/AppHooks";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { useGetEmailId, useGetName } from "@/apputils/AppHooks";
 import {
   useGetUserDetails,
   useUpdateAdress,
   useUpdateProfile,
 } from "@/hooks/user/userHooks";
-import AppSpinner from "@/apputils/AppSpinner";
+import { MapPin, User2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useAppContext } from "@/apputils/AppContext";
 
-export default function ProfileMain() {
-  const emailId = useGetEmailId();
-  const name = useGetName();
-  const [tab, setTab] = useState("personal");
+type ProfileFormData = {
+  name: string;
+  emailId: string;
+  phone: string;
+  bio: string;
+  ad1: string;
+  ad2: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+};
+
+function ProfileMain() {
+  const emailId = useGetEmailId() ?? "";
+  const name = useGetName() ?? "Customer";
+  const profileUrl = useGetProfileUrl();
   const { refresh } = useAppContext();
-  const { register, handleSubmit, formState, setValue } = useForm({
+  const [activeTab, setActiveTab] = useState<"personal" | "address">("personal");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<ProfileFormData>({
     defaultValues: {
       name,
       emailId,
       phone: "",
+      bio: "",
       ad1: "",
       ad2: "",
-      bio: "",
       city: "",
       state: "",
       pincode: "",
       country: "India",
     },
   });
-  const { errors } = formState;
   const { isPending, updateProfile } = useUpdateProfile();
-  const { isPending: gettingUseDetails, getUserDetails } = useGetUserDetails();
+  const { isPending: gettingUserDetails, getUserDetails } = useGetUserDetails();
   const { isPending: updatingAddress, updateAddress } = useUpdateAdress();
+
   useEffect(() => {
     getUserDetails(
-      {
-        emailId,
-      },
+      { emailId },
       {
         onSuccess(data) {
-          if (data?.user) {
-            const user = data?.user;
-            const userAd = data?.user?.address;
-            setValue("name", user?.firstName);
-            setValue("phone", user?.mobileNumber);
-            setValue("bio", user?.bio);
-            setValue("ad1", userAd?.addressLine1);
-            setValue("ad2", userAd?.addressLine2);
-            setValue("city", userAd?.city);
-            setValue("state", userAd?.state);
-            setValue("pincode", userAd?.pincode);
-            setValue("country", userAd?.country);
+          if (!data?.user) {
+            return;
           }
+
+          const user = data.user;
+          const address = user.address;
+          setValue("name", user.firstName ?? name);
+          setValue("phone", user.mobileNumber ?? "");
+          setValue("bio", user.bio ?? "");
+          setValue("ad1", address?.addressLine1 ?? "");
+          setValue("ad2", address?.addressLine2 ?? "");
+          setValue("city", address?.city ?? "");
+          setValue("state", address?.state ?? "");
+          setValue("pincode", address?.pincode ?? "");
+          setValue("country", address?.country ?? "India");
         },
       }
     );
-  }, [refresh]);
+  }, [emailId, getUserDetails, name, refresh, setValue]);
 
-  function handleSaveClick(e: any) {
-    if (tab === "personal") {
+  function handleSave(data: ProfileFormData) {
+    if (activeTab === "personal") {
       updateProfile({
         emailId,
-        name: e?.name,
-        bio: e?.bio ? e?.bio : "",
-        phoneNumber: e?.phone,
+        name: data.name,
+        bio: data.bio || "",
+        phoneNumber: data.phone,
       });
-    } else {
-      updateAddress({
-        emailId,
-        addressLine1: e?.ad1,
-        addressLine2: e?.ad2 || "",
-        city: e?.city,
-        state: e?.state,
-        pincode: e?.pincode,
-        country: e?.country || "India",
-      });
+      return;
     }
+
+    updateAddress({
+      emailId,
+      addressLine1: data.ad1,
+      addressLine2: data.ad2 || "",
+      city: data.city,
+      state: data.state,
+      pincode: data.pincode,
+      country: data.country || "India",
+    });
   }
 
-  return (
-    <div className="lg:w-[30vw] mx-auto lg:p-6 space-y-8 flex flex-col">
-      {
-        <AppSpinner
-          isPending={isPending || gettingUseDetails || updatingAddress}
-        />
-      }
+  const addressComplete = Boolean(watch("ad1") && watch("city") && watch("state") && watch("pincode"));
 
-      <div className="flex items-center gap-4">
-        <div>
-          <h1 className="text-4xl font-extrabold">My Profile</h1>
-          <p className="text-gray-500 text-sm">
-            Manage your personal details and address
-          </p>
+  return (
+    <div className="bg-[#eee1cf]">
+      <AppSpinner isPending={isPending || gettingUserDetails || updatingAddress} />
+      <div className="mx-auto max-w-[1600px] px-6 py-10 lg:px-10 lg:py-14">
+        <div className="grid gap-px bg-[#b7a189] lg:grid-cols-[0.34fr_0.66fr]">
+          <div className="bg-[#201610] p-6 text-[#f5efe4] lg:p-8">
+            <div className="flex items-center gap-4 border-b border-[#5a4332] pb-6">
+              <img
+                src={profileUrl || "/default_profile.webp"}
+                alt={name}
+                className="h-20 w-20 border border-[#b7a189] object-cover"
+              />
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">My account</p>
+                <h1 className="mt-3 font-fraunces text-[2.2rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                  {watch("name") || name}
+                </h1>
+                <p className="mt-2 text-sm leading-7 text-[#dcc9b4] break-all">{emailId}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-px bg-[#5a4332]">
+              <div className="bg-[#2e1710] p-5">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">Profile status</p>
+                <p className="mt-4 font-fraunces text-[1.8rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                  {watch("phone") ? "Ready" : "Needs phone"}
+                </p>
+              </div>
+              <div className="bg-[#2e1710] p-5">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">Address status</p>
+                <p className="mt-4 font-fraunces text-[1.8rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                  {addressComplete ? "Saved" : "Incomplete"}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 border-t border-[#5a4332] pt-6 text-sm leading-7 text-[#dcc9b4]">
+              Finish both sections so checkout can move without interruption.
+            </div>
+          </div>
+
+          <div className="bg-[#f7f1e8] p-6 lg:p-8">
+            <div className="flex flex-col gap-3 border-b border-[#b7a189] pb-6 sm:flex-row">
+              <button
+                onClick={() => setActiveTab("personal")}
+                className={`h-12 border px-5 text-xs uppercase tracking-[0.18em] ${
+                  activeTab === "personal"
+                    ? "border-[#201610] bg-[#201610] text-[#f5efe4]"
+                    : "border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                }`}
+              >
+                <User2 className="mr-2 inline h-4 w-4" />
+                Personal info
+              </button>
+              <button
+                onClick={() => setActiveTab("address")}
+                className={`h-12 border px-5 text-xs uppercase tracking-[0.18em] ${
+                  activeTab === "address"
+                    ? "border-[#201610] bg-[#201610] text-[#f5efe4]"
+                    : "border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                }`}
+              >
+                <MapPin className="mr-2 inline h-4 w-4" />
+                Address
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit(handleSave)} className="mt-6 grid gap-5">
+              {activeTab === "personal" ? (
+                <>
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <Input
+                      mandatory
+                      label="Full name"
+                      placeholder="Your full name"
+                      errorMessage={errors.name?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("name", { required: "Please enter your full name" })}
+                    />
+                    <Input
+                      disabled
+                      label="Email address"
+                      placeholder="you@example.com"
+                      errorMessage={errors.emailId?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("emailId")}
+                    />
+                  </div>
+                  <Input
+                    mandatory
+                    label="Phone number"
+                    placeholder="Phone number"
+                    errorMessage={errors.phone?.message}
+                    className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                    {...register("phone", { required: "Please enter your phone number" })}
+                  />
+                  <Textarea
+                    label="Bio"
+                    placeholder="A short note about your meal preferences or order needs"
+                    errorMessage={errors.bio?.message}
+                    className="min-h-[140px] rounded-none border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                    {...register("bio")}
+                  />
+                </>
+              ) : (
+                <>
+                  <Input
+                    mandatory
+                    label="Address line 1"
+                    placeholder="House number, street, area"
+                    errorMessage={errors.ad1?.message}
+                    className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                    {...register("ad1", { required: "Please enter address line 1" })}
+                  />
+                  <Input
+                    label="Address line 2"
+                    placeholder="Landmark, apartment, or optional extra details"
+                    errorMessage={errors.ad2?.message}
+                    className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                    {...register("ad2")}
+                  />
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <Input
+                      mandatory
+                      label="City"
+                      placeholder="City"
+                      errorMessage={errors.city?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("city", { required: "Please enter your city" })}
+                    />
+                    <Input
+                      mandatory
+                      label="State"
+                      placeholder="State"
+                      errorMessage={errors.state?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("state", { required: "Please enter your state" })}
+                    />
+                  </div>
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <Input
+                      mandatory
+                      label="Pincode"
+                      placeholder="Pincode"
+                      errorMessage={errors.pincode?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("pincode", { required: "Please enter your pincode" })}
+                    />
+                    <Input
+                      disabled
+                      label="Country"
+                      placeholder="India"
+                      errorMessage={errors.country?.message}
+                      className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                      {...register("country")}
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="flex flex-col gap-3 border-t border-[#b7a189] pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm leading-7 text-[#5f4633]">
+                  {activeTab === "personal"
+                    ? "Keep account details current so support and delivery updates stay accurate."
+                    : "A complete address is required before placing an order."}
+                </p>
+                <Button className="h-12 border-[#201610] bg-[#201610] px-8 text-xs uppercase tracking-[0.18em] text-[#f5efe4] hover:bg-[#3d1d10]">
+                  Save changes
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-
-      <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="flex justify-start gap-2 mb-6 w-full">
-          <TabsTrigger
-            className="data-[state=active]:bg-primary data-[state=active]:text-background border  text-foreground"
-            value="personal"
-          >
-            Personal Info
-          </TabsTrigger>
-          <TabsTrigger
-            className="data-[state=active]:bg-primary data-[state=active]:text-background text-foreground"
-            value="address"
-          >
-            Address
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="personal">
-          <Card className="border-none  shadow-none">
-            <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
-              <CardDescription>
-                Update your personal information
-              </CardDescription>
-            </CardHeader>
-            {tab === "personal" && (
-              <CardContent>
-                <form
-                  onSubmit={handleSubmit(handleSaveClick)}
-                  className="grid  grid-cols-1 md:grid-cols-2 gap-6 "
-                >
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("name", {
-                        required: "Please enter your Full name",
-                      })}
-                      errorMessage={errors?.name?.message}
-                      label="name"
-                      placeholder="Your full name"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      disabled={true}
-                      mandatory
-                      {...register("emailId", {
-                        required: false,
-                      })}
-                      errorMessage={errors?.emailId?.message}
-                      label="Email id"
-                      type="email"
-                      placeholder="example@email.com"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("phone", {
-                        required: "Please enter your Phone number",
-                      })}
-                      errorMessage={errors?.phone?.message}
-                      type="number"
-                      label="Phone number"
-                      placeholder="Phone number"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      {...register("bio", {
-                        required: false,
-                      })}
-                      label="bio"
-                      placeholder="Tell us about yourself..."
-                    />
-                  </div>
-
-                  <div className="mt-10">
-                    <Button className="w-fit">Save changes</Button>
-                  </div>
-                </form>
-              </CardContent>
-            )}
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="address">
-          <Card className="shadow-none border-none">
-            <CardHeader>
-              <CardTitle>Address Details</CardTitle>
-              <CardDescription>
-                Provide your address information
-              </CardDescription>
-            </CardHeader>
-            {tab === "address" && (
-              <CardContent>
-                <form
-                  onSubmit={handleSubmit(handleSaveClick)}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                >
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("ad1", {
-                        required: "Please enter your Address Line 1",
-                      })}
-                      errorMessage={errors?.ad1?.message}
-                      label="Address Line 1"
-                      placeholder="e.g. 123 MG Road, Near Axis Bank"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      {...register("ad2")}
-                      label="Address Line 2"
-                      placeholder="e.g. 2nd Floor, Flat No. 204 (optional)"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("city", {
-                        required: "Please enter your City",
-                      })}
-                      errorMessage={errors?.city?.message}
-                      label="City"
-                      placeholder="e.g. Bengaluru"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("state", {
-                        required: "Please enter your State",
-                      })}
-                      errorMessage={errors?.state?.message}
-                      label="State"
-                      placeholder="e.g. Karnataka"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("pincode", {
-                        required: "Please enter your Pincode",
-                      })}
-                      errorMessage={errors?.pincode?.message}
-                      label="Pincode"
-                      type="number"
-                      placeholder="e.g. 560001"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      {...register("country", {
-                        required: false,
-                      })}
-                      errorMessage={errors?.country?.message}
-                      label="Country"
-                      placeholder="e.g. India"
-                      disabled={true}
-                    />
-                  </div>
-                  <div className="mt-10">
-                    <Button className="w-fit">Save changes</Button>
-                  </div>
-                </form>
-              </CardContent>
-            )}
-          </Card>
-        </TabsContent>
-      </Tabs>
     </div>
   );
 }
+
+export default ProfileMain;

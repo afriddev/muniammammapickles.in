@@ -35,7 +35,7 @@ const Input = React.forwardRef<HTMLInputElement, InputInterface>(
     }
 
     return (
-      <div className={`flex flex-col gap-1 ${label && "h-16"}`}>
+      <div className="flex flex-col gap-1">
         <div>
           {label && (
             <label className=" font-medium mb-1 flex items-center">
@@ -65,7 +65,7 @@ const Input = React.forwardRef<HTMLInputElement, InputInterface>(
             />
             {onClear && props?.value && (
               <div
-                className="absolute right-2 flex h-5 w-5 cursor-pointer items-center justify-center border border-[#c8af8d] bg-[#f7edd9] lg:hover:bg-[#ead8b8]"
+                className="absolute right-2 flex h-5 w-5 cursor-pointer items-center justify-center border border-[#b7a189] bg-[#f7f1e8] lg:hover:bg-[#e7d6c3]"
                 onClick={onClear}
               >
                 <X className="h-4 w-4" />

@@ -1,47 +1,58 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import LoginForm from "./LoginForm";
+import AuthShell from "@/apputils/AuthShell";
+import AppSpinner from "@/apputils/AppSpinner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useLogin } from "@/hooks/auth/loginHooks";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import {  useState } from "react";
-import { useLogin } from "@/hooks/auth/loginHooks";
-import AppSpinner from "@/apputils/AppSpinner";
-import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import PageWrapper from "@/apputils/PageWrapper";
-import NavBar from "@/apputils/NavBar";
-import Footer from "@/apputils/Footer";
-import DividerWithText from "@/apputils/DividerWithText";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
-  const [loginStep, setLoginStep] = useState<number>(0);
+type LoginFormData = {
+  emailId: string;
+  password: string;
+  otp?: string;
+};
+
+function LoginMain() {
+  const [loginStep, setLoginStep] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
   const { login, isPending } = useLogin();
   const navigate = useNavigate();
-  const { formState, handleSubmit, register, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<LoginFormData>();
 
-
-  function handleLoginSubmit(e: any) {
+  function handleLoginSubmit(data: LoginFormData) {
     login(
       {
-        emailId: e?.emailId,
-        password: e?.password,
-        otp: e?.otp,
-        googleLogin: e?.googleLogin ? true : false,
-        profileUrl: e?.profileUrl,
-        firstName: e?.firstName,
+        emailId: data.emailId,
+        password: data.password,
+        otp: data.otp,
       },
       {
-        onSuccess(data) {
-          if (data?.data === "OTP_SENT") {
+        onSuccess(response) {
+          if (response?.data === "OTP_SENT") {
             setLoginStep(1);
-          } else if (data?.data === "SUCCESS") {
-            localStorage.setItem("MAPEmailId",e?.emailId)
-            localStorage.setItem("MAPName",e?.firstName)
-            localStorage.setItem("MAPProfile",e?.profileUrl)
-            localStorage.setItem("MAPAddressFilled",data?.addressFilled?.toString())
-            navigate(`/profile`);
-          } else {
-            reset();
+            return;
           }
+
+          if (response?.data === "SUCCESS") {
+            localStorage.setItem("MAPEmailId", data.emailId);
+            localStorage.setItem("MAPName", response?.user?.firstName ?? "Customer");
+            localStorage.setItem("MAPProfile", response?.user?.profileUrl ?? "");
+            localStorage.setItem("MAPAddressFilled", response?.addressFilled?.toString());
+            navigate("/profile");
+            return;
+          }
+
+          reset({ emailId: data.emailId, password: "", otp: "" });
         },
       }
     );
@@ -49,62 +60,138 @@ function Login() {
 
   function handleGoogleLoginSuccess(response: any) {
     const googleAuthResponse: any = jwtDecode(response.credential);
-    handleLoginSubmit({
-      emailId: googleAuthResponse?.email,
-      googleLogin: true,
-      firstName: googleAuthResponse?.name,
-      profileUrl: googleAuthResponse?.picture,
-    });
+
+    login(
+      {
+        emailId: googleAuthResponse?.email,
+        googleLogin: true,
+        firstName: googleAuthResponse?.name,
+        profileUrl: googleAuthResponse?.picture,
+      },
+      {
+        onSuccess(data) {
+          if (data?.data === "SUCCESS") {
+            localStorage.setItem("MAPEmailId", googleAuthResponse?.email);
+            localStorage.setItem("MAPName", googleAuthResponse?.name ?? "Customer");
+            localStorage.setItem("MAPProfile", googleAuthResponse?.picture ?? "");
+            localStorage.setItem("MAPAddressFilled", data?.addressFilled?.toString());
+            navigate("/profile");
+          }
+        },
+      }
+    );
   }
 
   return (
-    <PageWrapper>
-      <div className="flex flex-col ">
-        <div className="flex flex-col gap-10 h-[95vh] justify-between">
-          <NavBar />
-          <div className=" flex  h-full items-center">
-            {<AppSpinner isPending={isPending} />}
-            <div className=" w-full  flex items-center flex-col justify-between  ">
-              <div className="flex flex-col gap-y-5  justify-center px-2">
-                <div className="flex flex-col items-center gap-2">
-                  <h2 className=" text-3xl ">Login to your account</h2>
-                  <p className="text-xs text-foreground/70">
-                    Continue tracking your progress after logging <br /> in to
-                    your account
-                  </p>
-                </div>
+    <AuthShell
+      eyebrow="Login"
+      title="The account flow should feel as clean as the storefront."
+      intro="Sign in to continue with saved address details, order tracking, cart checkout, and repeat purchases without the old broken flow."
+      stats={[
+        { label: "Cart continuity", value: "Live" },
+        { label: "Profile access", value: "Direct" },
+        { label: "Checkout path", value: "Faster" },
+      ]}
+    >
+      <AppSpinner isPending={isPending} />
+      <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+        Welcome back
+      </p>
+      <h2 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610]">
+        {loginStep === 0 ? "Login to your account" : "Enter the OTP to continue"}
+      </h2>
+      <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+        {loginStep === 0
+          ? "Use email and password or continue with Google."
+          : "We sent a verification code to your email address."}
+      </p>
 
-                {loginStep === 0 && (
-                  <div className="flex flex-col gap-4">
-                    <div className="flex w-full items-center justify-center">
-                      <GoogleLogin
-                        width={360}
-                        onSuccess={handleGoogleLoginSuccess}
-                        onError={() => {
-                          console.log("Login Failed");
-                        }}
-                      />
-                    </div>
-                    <DividerWithText title={"OR"} />
-                  </div>
-                )}
-                <LoginForm
-                  loginStep={loginStep}
-                  handleLoginSubmit={handleLoginSubmit}
-                  formState={formState}
-                  handleSubmit={handleSubmit}
-                  register={register}
-                  watch={watch}
-                />
-              </div>
-            </div>
+      {loginStep === 0 ? (
+        <div className="mt-8 border border-[#b7a189] bg-[#eee1cf] p-5">
+          <div className="flex items-center justify-center">
+            <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={() => undefined} />
           </div>
         </div>
+      ) : null}
 
-        <Footer />
+      <div className="mt-6 border-t border-[#b7a189] pt-6">
+        <form onSubmit={handleSubmit(handleLoginSubmit)} className="grid gap-5">
+          <Input
+            mandatory
+            label="Email address"
+            placeholder="you@example.com"
+            errorMessage={errors.emailId?.message}
+            className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+            {...register("emailId", {
+              required: "Please enter your email address",
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Enter a valid email address",
+              },
+            })}
+          />
+
+          {loginStep === 0 ? (
+            <div className="relative">
+              <Input
+                mandatory
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Your password"
+                errorMessage={errors.password?.message}
+                className="h-12 border-[#b7a189] bg-[#eee1cf] pr-12 text-[#201610]"
+                {...register("password", {
+                  required: "Please enter your password",
+                })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute right-3 top-[41px] text-[#6a4c37]"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+          ) : (
+            <Input
+              mandatory
+              label="OTP"
+              placeholder="Enter the code"
+              errorMessage={errors.otp?.message}
+              className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+              {...register("otp", {
+                required: "Please enter the OTP",
+              })}
+            />
+          )}
+
+          <div className="flex flex-col gap-3 border-t border-[#b7a189] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              className="text-left text-sm uppercase tracking-[0.18em] text-[#8a4027]"
+            >
+              Forgot password
+            </button>
+            <Button className="h-12 border-[#201610] bg-[#201610] px-8 text-xs uppercase tracking-[0.18em] text-[#f5efe4] hover:bg-[#3d1d10]">
+              {loginStep === 0 ? "Login now" : "Verify login"}
+            </Button>
+          </div>
+        </form>
       </div>
-    </PageWrapper>
+
+      <div className="mt-6 border-t border-[#b7a189] pt-5 text-sm leading-7 text-[#5f4633]">
+        Do not have an account yet? {" "}
+        <button
+          type="button"
+          onClick={() => navigate("/signup")}
+          className="uppercase tracking-[0.18em] text-[#8a4027]"
+        >
+          Create one now
+        </button>
+      </div>
+    </AuthShell>
   );
 }
 
-export default Login;
+export default LoginMain;

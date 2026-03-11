@@ -1,169 +1,266 @@
-import { motion } from "framer-motion";
-import HeroBanner from "../home/Test1";
-import NavBar from "@/apputils/NavBar";
 import Footer from "@/apputils/Footer";
-import Testimonials from "../home/Testimonials";
-import DeliverySection from "../home/DeliverySection";
+import NavBar from "@/apputils/NavBar";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-export default function AboutMuniammamaPickles() {
-  const features = [
-    {
-      id: "01",
-      title: "Rooted in Tradition",
-      description:
-        "Every jar tells a story—crafted with age-old recipes passed down from generations.",
-    },
-    {
-      id: "02",
-      title: "Farm-Fresh Ingredients",
-      description:
-        "We handpick local, seasonal produce to ensure quality and authentic taste.",
-    },
-    {
-      id: "03",
-      title: "Small-Batch Crafting",
-      description:
-        "Made in small batches to preserve flavor integrity and freshness.",
-    },
-    {
-      id: "04",
-      title: "No Artificial Preservatives",
-      description:
-        "Our pickles are naturally fermented—free from chemicals or shortcuts.",
-    },
-    {
-      id: "05",
-      title: "Eco-Friendly Packaging",
-      description:
-        "Sustainability is core—we use recyclable jars and minimal plastic.",
-    },
-  ];
+const valueCards = [
+  {
+    eyebrow: "Recipe base",
+    title: "Family-led flavour",
+    copy: "The taste direction starts from the kind of Telugu pickle memory people trust at home, not from generic packaged-food trends.",
+  },
+  {
+    eyebrow: "Ingredient approach",
+    title: "Pantry truth first",
+    copy: "Mango, chilli, mustard, garlic, meat, oil, and spice texture are treated like the main story instead of background information.",
+  },
+  {
+    eyebrow: "Store intent",
+    title: "Sell with clarity",
+    copy: "The storefront is being rebuilt so people can understand the jar, price, size, and meal fit quickly enough to buy with confidence.",
+  },
+];
+
+const craftSteps = [
+  {
+    label: "Step 01",
+    title: "Choose the right raw material",
+    copy: "Each jar starts with the ingredient that defines it, whether that is raw mango, ripe chilli, chicken, or mutton.",
+  },
+  {
+    label: "Step 02",
+    title: "Build spice depth properly",
+    copy: "Mustard, chilli, garlic, fenugreek, salt, and oil have to land with appetite, not just heat.",
+  },
+  {
+    label: "Step 03",
+    title: "Pack for real meal use",
+    copy: "The jars need to fit the way customers actually eat: with rice, dosa, idli, paratha, and repeat lunches.",
+  },
+  {
+    label: "Step 04",
+    title: "Support after the order",
+    copy: "Address, cart, contact, and policy pages should feel part of one strong storefront, not disconnected screens.",
+  },
+];
+
+const trustRows = [
+  "Mapped product photography instead of random stock styling.",
+  "Clear size ladder from 250g to 1kg where relevant.",
+  "Policy, contact, and product pages aligned to the same shell.",
+  "Premium feel driven by food mood, not gimmicks.",
+];
+
+const brandStats = [
+  { label: "Core jars", value: "5" },
+  { label: "Visual direction", value: "Food-led" },
+  { label: "Store goal", value: "Buy faster" },
+];
+
+function AboutUs() {
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-white text-gray-900 font-sans">
+    <div className="min-h-screen bg-[#f5efe4] text-[#201610]">
       <NavBar />
-      <HeroBanner />
-
-      <section className="py-16 px-6 max-w-5xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-2xl md:text-3xl text-pink-800 mb-4">Our Story</h2>
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-            Muniammama Pickles was born from a cherished family recipe passed
-            down through generations in South India. Our founder’s grandmother,
-            lovingly called “Muniammama,” perfected the art of sun-cured,
-            spice-rich pickles that captured the essence of homemade comfort.
-            Today, we honor her legacy by crafting every jar with the same care,
-            patience, and traditional methods—one batch at a time.
-          </p>
-        </motion.div>
-      </section>
-
-      <section className="bg-yellow-50 py-20 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ x: -30, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-xl text-pink-800 mb-3">Our Mission</h3>
-            <p className="text-gray-700 text-base leading-relaxed">
-              To bring the warmth of homemade pickles to every table, using
-              honest ingredients, sun-drying techniques, and age-old recipes. We
-              celebrate slow food in a fast world.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ x: 30, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-xl text-pink-800 mb-3">Our Values</h3>
-            <ul className="space-y-2 list-disc list-inside text-gray-700">
-              <li>Rooted in tradition, perfected with passion</li>
-              <li>Clean ingredients, no preservatives</li>
-              <li>Locally sourced produce</li>
-              <li>Sustainably packed and naturally preserved</li>
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 px-6 md:px-10 lg:px-20">
-        <div className="grid md:grid-cols-3 gap-10">
-          {features.map((item) => (
-            <div key={item.id} className="flex items-start space-x-4">
-              <div className="text-[50px] text-outline font-unicafancy">
-                {item.id}
+      <main>
+        <section className="border-b border-[#5a4332] bg-[#201610] text-[#f5efe4]">
+          <div className="mx-auto grid max-w-[1600px] gap-px bg-[#5a4332] lg:grid-cols-[0.92fr_1.08fr]">
+            <div className="bg-[#201610] px-6 py-14 lg:px-10 lg:py-20">
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#d79b45]">
+                About Muni Ammamma
+              </p>
+              <h1 className="mt-5 max-w-[860px] font-fraunces text-[3.2rem] leading-[1.02] tracking-[-0.04em] text-[#fffaf2] lg:text-[5.4rem]">
+                This brand should feel like a kitchen legacy with a sharper modern storefront.
+              </h1>
+              <p className="mt-6 max-w-[700px] text-base leading-8 text-[#dcc9b4] lg:text-lg">
+                Muni Ammamma Pickles is positioned around jars people want to open immediately,
+                serve proudly, and reorder without friction. The aim is simple: better flavour
+                storytelling, better product clarity, and better buying flow from start to end.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  className="h-12 border-[#d79b45] bg-[#d79b45] px-8 text-sm uppercase tracking-[0.18em] text-[#201610] hover:bg-[#e5aa55]"
+                  onClick={() => navigate("/collection")}
+                >
+                  Shop Collection
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-12 border-[#f5efe4] bg-[#f5efe4] px-8 text-sm uppercase tracking-[0.18em] text-[#201610] hover:bg-[#ead8bc]"
+                  onClick={() => navigate("/contact")}
+                >
+                  Contact Us
+                </Button>
               </div>
-              <div>
-                <h4 className="text-xl -mt-4 font-semibold text-gray-800">
-                  {item.title}
-                </h4>
-                <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+              <div className="mt-10 grid gap-px bg-[#5a4332] sm:grid-cols-3">
+                {brandStats.map((stat) => (
+                  <div key={stat.label} className="bg-[#2e1710] p-5">
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">
+                      {stat.label}
+                    </p>
+                    <p className="mt-4 font-fraunces text-[2rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                      {stat.value}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-      <section className="py-20 lg:px-[20vw]">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-          <div className="relative w-full md:w-1/2">
-            <img
-              src="/chef/1.jpg" 
-              alt="About us"
-              className="h-[70vh] rounded-lg object-cover"
-            />
 
-            <div className="absolute -top-5 -left-5 w-10 h-10 bg-yellow-400 rounded-full shadow-md animate-ping"></div>
-            <div className="absolute -bottom-8 left-10 w-14 h-14 border-8 border-white rounded-full shadow-lg animate-bounce"></div>
-            <div className="absolute top-1/3 -right-3 w-4 h-4 animate-ping bg-yellow-400 rounded-full"></div>
-
-            <div className="absolute bottom-2 -right-10 lg:right-56 border border-foreground/10 transform -translate-x-1/2 bg-white px-6 py-10 shadow-xl rounded-lg lg:w-[10vw] text-center z-10">
-                <h3 className="text-4xl font-extrabold text-purple-800 tracking-wide">
-                  17 +
-                </h3>
-                <p className="mt-2 text-sm font-medium text-gray-700">
-                  Years
-                  <br />
-                  Experience
+            <div className="grid gap-px bg-[#5a4332] md:grid-cols-2">
+              <div className="overflow-hidden bg-[#e7d6c3] md:col-span-2">
+                <img
+                  src="/spices_detail.png"
+                  alt="Pickle spices and masala"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="overflow-hidden bg-[#e7d6c3]">
+                <img
+                  src="/final.png"
+                  alt="Muni Ammamma Pickles brand mark"
+                  className="h-full w-full object-contain p-8"
+                />
+              </div>
+              <div className="bg-[#2e1710] p-6 lg:p-8">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#d79b45]">
+                  Brand note
+                </p>
+                <h2 className="mt-4 font-fraunces text-[2rem] leading-[1.06] tracking-[-0.03em] text-[#fffaf2]">
+                  Appetite should carry the premium feel.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[#dcc9b4]">
+                  The visual direction is being rebuilt around edible texture, shelf confidence,
+                  warm materials, and product-first hierarchy.
                 </p>
               </div>
+            </div>
           </div>
+        </section>
 
-          <div className="w-full md:w-1/2">
-            <h2 className="text-3xl md:text-4xl font-bold text-pink-800 leading-tight">
-              We are doing more than
-              <br />
-              you expect
-            </h2>
-            <p className="mt-6 text-gray-600 leading-relaxed">
-              Faudantium magnam error temporibus ipsam aliquid neque quibusdam
-              dolor, quia ea numquam assumenda mollitia dolorem impedit.
-              Voluptate at quis exercitationem officia temporibus adipisci quae
-              totam enim dolorem assumenda.
-            </p>
-            <p className="mt-4 text-gray-600 leading-relaxed">
-              Consectetur adipisicing elit. Cupiditate nesciunt amet facilis
-              numquam, nam adipisci qui voluptate voluptas enim obcaecati
-              veritatis animi nulla, mollitia commodi quaerat ex, autem ea
-              laborum.
-            </p>
+        <section className="border-b border-[#b7a189] bg-[#eee1cf]">
+          <div className="mx-auto max-w-[1600px] px-6 py-14 lg:px-10 lg:py-20">
+            <div className="max-w-[760px]">
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+                What This Brand Needs To Do
+              </p>
+              <h2 className="mt-4 font-fraunces text-[3rem] leading-[1.04] tracking-[-0.035em] text-[#201610] lg:text-[4.4rem]">
+                Trust has to be built before the lid is opened.
+              </h2>
+            </div>
+
+            <div className="mt-10 grid gap-px bg-[#b7a189] lg:grid-cols-3">
+              {valueCards.map((card) => (
+                <article key={card.title} className="bg-[#f7f1e8] p-6 lg:p-8">
+                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+                    {card.eyebrow}
+                  </p>
+                  <h3 className="mt-4 font-fraunces text-[2rem] leading-[1.06] tracking-[-0.03em] text-[#201610]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+                    {card.copy}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-      <DeliverySection />
+        </section>
 
-      <Testimonials />
+        <section className="border-b border-[#b7a189] bg-[#f7f1e8]">
+          <div className="mx-auto grid max-w-[1600px] gap-px bg-[#b7a189] lg:grid-cols-[0.94fr_1.06fr]">
+            <div className="bg-[#f7f1e8] px-6 py-14 lg:px-10 lg:py-20">
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+                Craft Direction
+              </p>
+              <h2 className="mt-4 max-w-[740px] font-fraunces text-[3rem] leading-[1.04] tracking-[-0.035em] text-[#201610] lg:text-[4.4rem]">
+                The jar should read clearly from ingredient to delivery.
+              </h2>
+              <div className="mt-8 grid gap-px bg-[#b7a189]">
+                {craftSteps.map((step) => (
+                  <article key={step.title} className="bg-[#eee1cf] px-5 py-5 lg:px-6">
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+                      {step.label}
+                    </p>
+                    <h3 className="mt-3 font-fraunces text-[1.9rem] leading-[1.06] tracking-[-0.03em] text-[#201610]">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-[#5f4633]">
+                      {step.copy}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
 
+            <div className="grid gap-px bg-[#b7a189] md:grid-cols-2">
+              <div className="overflow-hidden bg-[#e7d6c3] md:col-span-2">
+                <img
+                  src="/mango/mango_pickle.webp"
+                  alt="Mango pickle jar"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="bg-[#f5efe4] p-6 lg:p-8">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+                  Meal fit
+                </p>
+                <h3 className="mt-4 font-fraunces text-[2rem] leading-[1.06] tracking-[-0.03em] text-[#201610]">
+                  Built for repeat use
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+                  The products are positioned for lunch plates, breakfast pairings,
+                  and repeat family orders, not novelty browsing.
+                </p>
+              </div>
+              <div className="bg-[#f5efe4] p-6 lg:p-8">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-[#8a4027]">
+                  Visual rhythm
+                </p>
+                <h3 className="mt-4 font-fraunces text-[2rem] leading-[1.06] tracking-[-0.03em] text-[#201610]">
+                  Less filler, more food
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+                  Product images, flavour cues, and direct hierarchy now do the work that old decorative sections failed to do.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-[#b7a189] bg-[#eee1cf]">
+          <div className="mx-auto max-w-[1600px] px-6 py-14 lg:px-10 lg:py-20">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-[760px]">
+                <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+                  Trust Markers
+                </p>
+                <h2 className="mt-4 font-fraunces text-[3rem] leading-[1.04] tracking-[-0.035em] text-[#201610] lg:text-[4.4rem]">
+                  The whole storefront has to support the jar, not distract from it.
+                </h2>
+              </div>
+              <Button
+                variant="outline"
+                className="h-12 border-[#201610] bg-transparent px-8 text-sm uppercase tracking-[0.18em] text-[#201610] hover:bg-[#201610] hover:text-[#f5efe4]"
+                onClick={() => navigate("/collection")}
+              >
+                Browse Jars
+              </Button>
+            </div>
+
+            <div className="mt-10 grid gap-px bg-[#b7a189] lg:grid-cols-2">
+              {trustRows.map((row) => (
+                <div key={row} className="bg-[#f7f1e8] px-6 py-5 text-sm leading-7 text-[#5f4633] lg:px-8">
+                  {row}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
       <Footer />
     </div>
   );
 }
+
+export default AboutUs;

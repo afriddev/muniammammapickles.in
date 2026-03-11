@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useHandleApiResponse } from "@/apiServices";
 import { useAppContext } from "@/apputils/AppContext";
+import { clearCartItems } from "@/apputils/cart";
 import {
   createOrderAPI,
   getUserDetailsAPI,
@@ -43,7 +44,7 @@ export function useVerifyOrder() {
     onSuccess(data) {
       if (data?.data === "SUCCESS") {
         handleToast("VALID_PAYMENT");
-        localStorage.removeItem("mapCartItems")
+        clearCartItems();
       } else if (data?.data === "INVALID_PAYMENT") {
         handleToast("INVALID_PAYMENT");
       } else {
@@ -110,7 +111,7 @@ export function useGetUserDetails() {
       if (data?.data === "SUCCESS") {
         localStorage.setItem(
           "MAPAddressFilled",
-          (data?.user?.address === null)?.toString()
+          (data?.user?.address !== null)?.toString()
         );
       }
 

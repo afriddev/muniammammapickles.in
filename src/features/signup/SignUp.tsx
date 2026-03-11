@@ -1,47 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import AuthShell from "@/apputils/AuthShell";
+import AppSpinner from "@/apputils/AppSpinner";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
-import InterPhoneInput from "@/components/ui/phone-input";
+import { Input } from "@/components/ui/input";
+import { useSignUp } from "@/hooks/auth/signUpHooks";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { useSignUp } from "@/hooks/auth/signUpHooks";
-import AppSpinner from "@/apputils/AppSpinner";
-import { MdArrowBackIosNew } from "react-icons/md";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { LuAsterisk } from "react-icons/lu";
-import PageWrapper from "@/apputils/PageWrapper";
-import NavBar from "@/apputils/NavBar";
-import Footer from "@/apputils/Footer";
 
-type FormData = {
+type SignUpFormData = {
   firstName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
   phone: string;
   password: string;
-  agree: boolean;
   otp?: string;
-  googleSignUp?: boolean;
-  profileUrl?: string;
+  agree: boolean;
 };
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const [signUpStep, setSignUpStep] = useState(0);
   const { signUp, isPending } = useSignUp();
-  const [signUpStep, setSignUpStep] = useState<number>(0);
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
     watch,
-  } = useForm<FormData>();
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    defaultValues: {
+      agree: false,
+    },
+  });
 
-  function onSubmit(data: FormData) {
+  function onSubmit(data: SignUpFormData) {
     signUp(
       {
         emailId: data.email,
@@ -49,240 +45,206 @@ function SignUp() {
         lastName: data.lastName,
         mobileNumber: data.phone,
         password: data.password,
-        otp: data?.otp ? parseInt(data?.otp) : undefined,
-        googleSignUp: data?.googleSignUp,
-        profileUrl: data?.profileUrl,
+        otp: data.otp ? parseInt(data.otp, 10) : undefined,
       },
       {
-        onSuccess: (data) => {
-          if (data?.data === "OTP_SENT") {
+        onSuccess(response) {
+          if (response?.data === "OTP_SENT") {
             setSignUpStep(1);
-          } else if (data?.data === "SUCCESS") {
+            return;
+          }
+
+          if (response?.data === "SUCCESS") {
             navigate("/login");
-          } else if (data?.data === "USER_EXISTS") {
-            setTimeout(() => {
-              navigate("/login", {
-                state: {
-                  data: "USER_EXISTS",
-                },
-              });
-            }, 1000);
+            return;
+          }
+
+          if (response?.data === "USER_EXISTS") {
+            navigate("/login");
           }
         },
       }
     );
   }
 
-  function handleBackClick() {
-    setSignUpStep(0);
-  }
-
   function handleGoogleSignInSuccess(response: any) {
     const googleAuthResponse: any = jwtDecode(response?.credential);
+    const [firstName, ...restName] = (googleAuthResponse?.name ?? "Customer").split(" ");
 
-    onSubmit({
-      email: googleAuthResponse?.email,
-      firstName: googleAuthResponse?.name,
-      googleSignUp: true,
-      profileUrl: googleAuthResponse?.picture,
-    } as any);
+    signUp(
+      {
+        emailId: googleAuthResponse?.email,
+        firstName,
+        lastName: restName.join(" "),
+        googleSignUp: true,
+        profileUrl: googleAuthResponse?.picture,
+      } as any,
+      {
+        onSuccess(data) {
+          if (data?.data === "SUCCESS") {
+            navigate("/login");
+          }
+        },
+      }
+    );
   }
 
   return (
-    <PageWrapper>
-      <div className="flex flex-col ">
-        <div className="flex flex-col lg:h-[95vh]  ">
-          <NavBar />
-          <div className=" flex  bg-background  items-center ">
-            {<AppSpinner isPending={isPending} />}
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="w-full max-w-md mx-auto   p-10 space-y-4"
-            >
-              <div className="text-center">
-                <h2 className="text-3xl ">Create Your Account</h2>
-                <p className="text-muted-foreground  mt-1">Freegrow Nextgen</p>
-              </div>
-              {signUpStep === 0 ? (
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col lg:flex-row gap-4">
-                    <div className="w-full">
-                      <Input
-                        mandatory
-                        label="First name"
-                        errorMessage={errors?.firstName?.message}
-                        placeholder="First name"
-                        {...register("firstName", {
-                          required: "Please enter First Name",
-                        })}
-                      />
-                    </div>
-                    <div className="w-full">
-                      <Input
-                        label="Last name"
-                        errorMessage={errors.lastName?.message}
-                        placeholder="Last name"
-                        {...register("lastName", { required: false })}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Input
-                      mandatory
-                      label="Email Address"
-                      errorMessage={errors.email?.message}
-                      placeholder="Enter your email"
-                      {...register("email", {
-                        required: "Please enter Email Address",
-                        pattern: {
-                          value: /^\S+@\S+$/i,
-                          message: "Invalid Email Adress format",
-                        },
-                      })}
-                    />
-                  </div>
-                  <div className="flex  gap-1 flex-col h-16">
-                    <label className="flex items-center  font-medium mb-1">
-                      Phone Number{" "}
-                      <span className="w-3 h-3">
-                        <LuAsterisk className="w-3  h-3  text-destructive" />
-                      </span>
-                    </label>
-                    <InterPhoneInput
-                      {...register("phone", {
-                        required: false,
-                      })}
-                    />
-                    <p className="  text-destructive">
-                      {<label className="">{errors?.phone?.message}</label>}
-                    </p>
-                  </div>
-                  <div>
-                    <div className="relative ">
-                      <Input
-                        label="Password"
-                        mandatory
-                        errorMessage={errors.password?.message}
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        className="pr-10 w-full"
-                        {...register("password", {
-                          required: "Please enter Password",
-                          pattern: {
-                            value:
-                              /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/,
-                            message:
-                              "Password must be at least 8 characters, include an uppercase letter, a number, and a special character",
-                          },
-                        })}
-                      />
+    <AuthShell
+      eyebrow="Create account"
+      title="A better storefront still needs a better signup flow."
+      intro="Create your account to save address details, manage orders, and move into checkout without the old broken experience."
+      stats={[
+        { label: "Account setup", value: "Quick" },
+        { label: "Address save", value: "After login" },
+        { label: "Order flow", value: "Cleaner" },
+      ]}
+    >
+      <AppSpinner isPending={isPending} />
+      <p className="text-[11px] uppercase tracking-[0.34em] text-[#8a4027]">
+        Join the store
+      </p>
+      <h2 className="mt-4 font-fraunces text-[2.8rem] leading-[1.04] tracking-[-0.03em] text-[#201610]">
+        {signUpStep === 0 ? "Create your account" : "Verify your signup"}
+      </h2>
+      <p className="mt-4 text-sm leading-7 text-[#5f4633]">
+        {signUpStep === 0
+          ? "Use email signup or continue with Google to start ordering faster."
+          : "Enter the OTP sent to your email address to activate the account."}
+      </p>
 
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-2 top-[39px] -translate-y-1/2 text-muted-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex  gap-1 flex-col h-20 pt-4">
-                    <label className="flex items-start gap-2 text-muted-foreground cursor-pointer">
-                      <input
-                        type="checkbox"
-                        {...register("agree", {
-                          required:
-                            "You must accept FreeGrow’s Terms of Use and Privacy Policy to continue.",
-                          validate: (v) =>
-                            v === true ||
-                            "You must accept FreeGrow’s Terms of Use and Privacy Policy to continue.",
-                        })}
-                        className="mt-1 cursor-pointer accent-primary"
-                      />
-                      <span className="text-sm leading-relaxed">
-                        I have read and agree to FreeGrow’s{" "}
-                        <a
-                          href="/terms"
-                          target="_blank"
-                          className="text-primary hover:underline font-medium"
-                        >
-                          Terms of Use
-                        </a>{" "}
-                        and{" "}
-                        <a
-                          href="/privacy-policy"
-                          target="_blank"
-                          className="text-primary hover:underline font-medium"
-                        >
-                          Privacy Policy
-                        </a>
-                        .
-                      </span>
-                    </label>
-
-                    <p className="  text-destructive">
-                      {<label className="">{errors?.agree?.message}</label>}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-center w-full ">
-                    <GoogleLogin
-                      width={300}
-                      onSuccess={handleGoogleSignInSuccess}
-                      onError={() => {
-                        console.log("Login Failed");
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="py-4">
-                  <Input
-                    label="OTP"
-                    errorMessage={errors.email?.message}
-                    placeholder="Enter OTP"
-                    {...register("otp", {
-                      required: "Please enter OTP",
-                    })}
-                  />
-                </div>
-              )}
-
-              <div className="w-full flex gap-4 items-center justify-center ">
-                {signUpStep === 1 && (
-                  <Button
-                    onClick={handleBackClick}
-                    type="button"
-                    className="px-10 w-fit"
-                    variant={"outline"}
-                  >
-                    <MdArrowBackIosNew className="w-5 h-5" /> Back
-                  </Button>
-                )}
-                <Button
-                  disabled={watch("agree") !== true}
-                  type="submit"
-                  className="px-10 w-fit"
-                  variant={"constructive"}
-                >
-                  Create account
-                </Button>
-              </div>
-              <p className="text-center  text-muted-foreground">
-                Already have an account?{" "}
-                <a href="/login" className="text-primary underline font-medium">
-                  Log in
-                </a>
-              </p>
-            </form>
+      {signUpStep === 0 ? (
+        <div className="mt-8 border border-[#b7a189] bg-[#eee1cf] p-5">
+          <div className="flex items-center justify-center">
+            <GoogleLogin onSuccess={handleGoogleSignInSuccess} onError={() => undefined} />
           </div>
         </div>
-        <Footer />
+      ) : null}
+
+      <div className="mt-6 border-t border-[#b7a189] pt-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
+          {signUpStep === 0 ? (
+            <>
+              <div className="grid gap-5 md:grid-cols-2">
+                <Input
+                  mandatory
+                  label="First name"
+                  placeholder="First name"
+                  errorMessage={errors.firstName?.message}
+                  className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                  {...register("firstName", {
+                    required: "Please enter your first name",
+                  })}
+                />
+                <Input
+                  label="Last name"
+                  placeholder="Last name"
+                  errorMessage={errors.lastName?.message}
+                  className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                  {...register("lastName")}
+                />
+              </div>
+
+              <Input
+                mandatory
+                label="Email address"
+                placeholder="you@example.com"
+                errorMessage={errors.email?.message}
+                className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                {...register("email", {
+                  required: "Please enter your email address",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Enter a valid email address",
+                  },
+                })}
+              />
+
+              <Input
+                mandatory
+                label="Phone number"
+                placeholder="Phone number"
+                errorMessage={errors.phone?.message}
+                className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+                {...register("phone", {
+                  required: "Please enter your phone number",
+                })}
+              />
+
+              <div className="relative">
+                <Input
+                  mandatory
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create password"
+                  errorMessage={errors.password?.message}
+                  className="h-12 border-[#b7a189] bg-[#eee1cf] pr-12 text-[#201610]"
+                  {...register("password", {
+                    required: "Please create a password",
+                    pattern: {
+                      value:
+                        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,}$/,
+                      message:
+                        "Use 8+ characters with uppercase, number, and special character",
+                    },
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((current) => !current)}
+                  className="absolute right-3 top-[41px] text-[#6a4c37]"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+
+              <label className="flex items-start gap-3 border border-[#b7a189] bg-[#eee1cf] p-4 text-sm leading-7 text-[#5f4633]">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  {...register("agree", {
+                    validate: (value) => value || "Please accept the store terms to continue",
+                  })}
+                />
+                <span>
+                  I agree to the store terms, privacy policy, and account verification process.
+                </span>
+              </label>
+              {errors.agree?.message ? (
+                <p className="text-sm text-[#8a4027]">{errors.agree.message}</p>
+              ) : null}
+            </>
+          ) : (
+            <Input
+              mandatory
+              label="OTP"
+              placeholder="Enter the code"
+              errorMessage={errors.otp?.message}
+              className="h-12 border-[#b7a189] bg-[#eee1cf] text-[#201610]"
+              {...register("otp", {
+                required: "Please enter the OTP",
+              })}
+            />
+          )}
+
+          <div className="flex flex-col gap-3 border-t border-[#b7a189] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="text-left text-sm uppercase tracking-[0.18em] text-[#8a4027]"
+            >
+              Already have an account
+            </button>
+            <Button
+              disabled={signUpStep === 0 && watch("agree") !== true}
+              className="h-12 border-[#201610] bg-[#201610] px-8 text-xs uppercase tracking-[0.18em] text-[#f5efe4] hover:bg-[#3d1d10]"
+            >
+              {signUpStep === 0 ? "Create account" : "Verify account"}
+            </Button>
+          </div>
+        </form>
       </div>
-    </PageWrapper>
+    </AuthShell>
   );
 }
 

@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import CartMain from "@/features/cart/CartMain";
 import { useEffect, useState } from "react";
 import { useGetEmailId, useGetProfileUrl } from "./AppHooks";
+import { CART_UPDATED_EVENT, getCartCount } from "./cart";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -18,6 +19,7 @@ function NavBar() {
   const location = useLocation();
   const [openCart, setOpenCart] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const emailId = useGetEmailId();
   const profileUrl = useGetProfileUrl();
 
@@ -25,6 +27,21 @@ function NavBar() {
     setOpenCart(false);
     setOpenMenu(false);
   }, [location]);
+
+  useEffect(() => {
+    const syncCartCount = () => {
+      setCartCount(getCartCount());
+    };
+
+    syncCartCount();
+    window.addEventListener("storage", syncCartCount);
+    window.addEventListener(CART_UPDATED_EVENT, syncCartCount);
+
+    return () => {
+      window.removeEventListener("storage", syncCartCount);
+      window.removeEventListener(CART_UPDATED_EVENT, syncCartCount);
+    };
+  }, []);
 
   function isActive(path: string) {
     if (path === "/") {
@@ -35,9 +52,9 @@ function NavBar() {
   }
 
   return (
-    <header className="sticky top-0 z-[200] border-b border-[#c8af8d] bg-[#f6ebd1]/95 backdrop-blur">
-      <div className="border-b border-[#8c3618] bg-[#d9b24c]">
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-3 text-[10px] uppercase tracking-[0.32em] text-[#24110b] lg:px-10">
+    <header className="sticky top-0 z-[200] w-full border-b border-[#b7a189] bg-[#f5efe4]/95 backdrop-blur">
+      <div className="border-b border-[#6f3421] bg-[#8a4027]">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-3 text-[10px] uppercase tracking-[0.32em] text-[#fffaf2] lg:px-10">
           <p>Handmade Andhra pickles</p>
           <p className="hidden font-semibold md:block">Packed fresh. Built for repeat orders.</p>
         </div>
@@ -51,13 +68,13 @@ function NavBar() {
           <img
             src="/final.png"
             alt="Muni Ammamma Pickles"
-            className="h-12 w-12 border border-[#c8af8d] bg-[#ead8b8] object-cover"
+            className="h-12 w-12 border border-[#b7a189] bg-[#e7d6c3] object-cover"
           />
           <div>
-            <p className="font-fraunces text-[2rem] leading-none text-[#24110b]">
+            <p className="font-fraunces text-[2rem] leading-[1.02] tracking-[-0.03em] text-[#201610]">
               Muni Ammamma
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.34em] text-[#8c3618]">
+            <p className="mt-1 text-[10px] uppercase tracking-[0.34em] text-[#8a4027]">
               Pickles
             </p>
           </div>
@@ -70,8 +87,8 @@ function NavBar() {
               onClick={() => navigate(item.path)}
               className={`border-b pb-1 text-sm uppercase tracking-[0.18em] transition-colors ${
                 isActive(item.path)
-                  ? "border-[#8c3618] text-[#24110b]"
-                  : "border-transparent text-[#6d4426] hover:border-[#8c3618] hover:text-[#24110b]"
+                  ? "border-[#8a4027] text-[#201610]"
+                  : "border-transparent text-[#6a4c37] hover:border-[#8a4027] hover:text-[#201610]"
               }`}
             >
               {item.label}
@@ -84,15 +101,18 @@ function NavBar() {
             <SheetTrigger asChild>
               <Button
                 variant="outline"
-                className="h-11 border-[#24110b] bg-transparent px-5 text-xs uppercase tracking-[0.18em] text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+                className="h-11 border-[#201610] bg-transparent px-5 text-xs uppercase tracking-[0.18em] text-[#201610] shadow-none hover:bg-[#201610] hover:text-[#f5efe4]"
               >
                 <ShoppingBag className="h-4 w-4" />
                 Cart
+                <span className="border border-current px-1.5 py-0.5 text-[10px] leading-none">
+                  {cartCount}
+                </span>
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="border-l border-[#c8af8d] bg-[#f6ebd1] p-4 shadow-none"
+              className="flex w-full max-w-[440px] flex-col border-l border-[#b7a189] bg-[#f5efe4] p-0 pt-12 shadow-none"
             >
               <CartMain />
             </SheetContent>
@@ -101,20 +121,20 @@ function NavBar() {
           {emailId ? (
             <button
               onClick={() => navigate("/profile")}
-              className="flex items-center gap-3 border border-[#24110b] px-3 py-2"
+              className="flex items-center gap-3 border border-[#201610] px-3 py-2"
             >
               <img
                 src={profileUrl || "/default_profile.webp"}
                 alt="Profile"
-                className="h-9 w-9 border border-[#c8af8d] object-cover"
+                className="h-9 w-9 border border-[#b7a189] object-cover"
               />
-              <span className="text-xs uppercase tracking-[0.18em] text-[#24110b]">
+              <span className="text-xs uppercase tracking-[0.18em] text-[#201610]">
                 Account
               </span>
             </button>
           ) : (
             <Button
-              className="h-11 border-[#24110b] bg-[#24110b] px-5 text-xs uppercase tracking-[0.18em] text-[#f6ebd1] shadow-none hover:bg-[#3c1d10]"
+              className="h-11 border-[#201610] bg-[#201610] px-5 text-xs uppercase tracking-[0.18em] text-[#f5efe4] shadow-none hover:bg-[#342017]"
               onClick={() => navigate("/login")}
             >
               Login
@@ -128,14 +148,17 @@ function NavBar() {
               <Button
                 variant="outline"
                 size="icon"
-                className="border-[#24110b] bg-transparent text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+                className="relative border-[#201610] bg-transparent text-[#201610] shadow-none hover:bg-[#201610] hover:text-[#f5efe4]"
               >
                 <ShoppingBag className="h-5 w-5" />
+                <span className="absolute -right-1 -top-1 border border-[#201610] bg-[#f5efe4] px-1 text-[9px] leading-none text-[#201610]">
+                  {cartCount}
+                </span>
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full max-w-sm border-l border-[#c8af8d] bg-[#f6ebd1] p-4 shadow-none"
+              className="flex w-full max-w-[440px] flex-col border-l border-[#b7a189] bg-[#f5efe4] p-0 pt-12 shadow-none"
             >
               <CartMain />
             </SheetContent>
@@ -146,32 +169,32 @@ function NavBar() {
               <Button
                 variant="outline"
                 size="icon"
-                className="border-[#24110b] bg-transparent text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+                className="border-[#201610] bg-transparent text-[#201610] shadow-none hover:bg-[#201610] hover:text-[#f5efe4]"
               >
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="border-l border-[#c8af8d] bg-[#f6ebd1] p-0 shadow-none"
+              className="border-l border-[#b7a189] bg-[#f5efe4] p-0 shadow-none"
             >
               <div className="flex h-full flex-col justify-between">
                 <div className="px-6 py-20">
-                  <div className="border-b border-[#c8af8d] pb-6">
-                    <p className="font-fraunces text-4xl leading-none text-[#24110b]">
+                  <div className="border-b border-[#b7a189] pb-6">
+                    <p className="font-fraunces text-4xl leading-[1.04] tracking-[-0.03em] text-[#201610]">
                       Store Menu
                     </p>
-                    <p className="mt-3 text-sm leading-6 text-[#5a3822]">
+                    <p className="mt-3 text-sm leading-6 text-[#5f4633]">
                       Pick a flavour, open the collection, and order fast.
                     </p>
                   </div>
 
-                  <div className="mt-6 flex flex-col border-t border-[#c8af8d]">
+                  <div className="mt-6 flex flex-col border-t border-[#b7a189]">
                     {navItems.map((item) => (
                       <button
                         key={item.path}
                         onClick={() => navigate(item.path)}
-                        className="border-b border-[#c8af8d] py-4 text-left text-sm uppercase tracking-[0.18em] text-[#24110b]"
+                        className="border-b border-[#b7a189] py-4 text-left text-sm uppercase tracking-[0.18em] text-[#201610]"
                       >
                         {item.label}
                       </button>
@@ -179,18 +202,18 @@ function NavBar() {
                   </div>
                 </div>
 
-                <div className="border-t border-[#c8af8d] px-6 py-6">
+                <div className="border-t border-[#b7a189] px-6 py-6">
                   {emailId ? (
                     <Button
                       variant="outline"
-                      className="w-full border-[#24110b] bg-transparent text-xs uppercase tracking-[0.18em] text-[#24110b] shadow-none hover:bg-[#24110b] hover:text-[#f6ebd1]"
+                      className="w-full border-[#201610] bg-transparent text-xs uppercase tracking-[0.18em] text-[#201610] shadow-none hover:bg-[#201610] hover:text-[#f5efe4]"
                       onClick={() => navigate("/profile")}
                     >
                       My Account
                     </Button>
                   ) : (
                     <Button
-                      className="w-full border-[#24110b] bg-[#24110b] text-xs uppercase tracking-[0.18em] text-[#f6ebd1] shadow-none hover:bg-[#3c1d10]"
+                      className="w-full border-[#201610] bg-[#201610] text-xs uppercase tracking-[0.18em] text-[#f5efe4] shadow-none hover:bg-[#342017]"
                       onClick={() => navigate("/login")}
                     >
                       Login
